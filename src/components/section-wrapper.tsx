@@ -1,4 +1,3 @@
-import { cn } from '@/lib/utils';
 import { BaseComponent } from '../../types';
 
 interface Props extends BaseComponent {
