@@ -8,7 +8,7 @@ export default function Footer() {
         <div className='grid gap-12 sm:grid-cols-4 sm:justify-items-center sm:gap-4'>
           <div className='flex flex-col gap-4'>
             <RaketHubIcon className='text-2xl text-white' />
-            <p>The Philippines' community marketplace for skills and services.</p>
+            <p>The Philippines&apos; community marketplace for skills and services.</p>
           </div>
           <div className='flex flex-col gap-3'>
             <p className='text-sm font-semibold text-white/80'>CATEGORIES</p>
