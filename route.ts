@@ -3,4 +3,5 @@ export const PublicRoutes = {
   HOW_IT_WORKS: '/how-it-works',
   SIGN_UP: '/signup',
   LOGIN: '/login',
+  SERVICES: '/services',
 };

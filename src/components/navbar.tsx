@@ -6,7 +6,7 @@ import { PublicRoutes } from '../../route';
 
 export default function Navbar() {
   return (
-    <nav className='sticky top-0 z-50 flex w-full items-center justify-center bg-white/70 px-4 py-3 text-black/80 backdrop-blur-md lg:px-0'>
+    <nav className='sticky top-0 z-50 flex w-full items-center justify-center bg-white/70 px-4 py-3 text-black/80 shadow-sm backdrop-blur-md lg:px-0'>
       <NavbarDesktop />
       <NavbarMobile />
     </nav>
@@ -18,7 +18,10 @@ function NavbarDesktop() {
     <div className='container hidden items-center justify-between lg:flex'>
       <RaketHubIcon />
       <div className='flex items-center justify-center gap-4'>
-        <Link href='#' className='rounded-lg px-4 py-2 text-sm transition-colors hover:bg-neutral-100'>
+        <Link
+          href={PublicRoutes.SERVICES}
+          className='rounded-lg px-4 py-2 text-sm transition-colors hover:bg-neutral-100'
+        >
           Find Services
         </Link>
         <Link
@@ -62,7 +65,7 @@ function NavbarMobile() {
           </DrawerHeader>
           <div className='flex flex-col gap-1'>
             <Link
-              href='#'
+              href={PublicRoutes.SERVICES}
               className='rounded-md px-4 py-2 font-semibold text-neutral-600 transition-colors active:bg-blue-100 active:text-blue-600'
             >
               Find Services

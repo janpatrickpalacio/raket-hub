@@ -9,12 +9,17 @@ interface Props {
 export default function ServiceCard({ title, price }: Props) {
   return (
     <div className='flex flex-col gap-2'>
-      <Card className='relative border-none shadow-none'>
+      <Card className='relative overflow-hidden border-none shadow-none'>
         <CardContent className='flex min-h-40 w-full items-center justify-center'>
-          <p className='z-0'>Home Cleaning</p>
+          <img
+            src={`https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${title}`}
+            alt='Avatar'
+            className='absolute top-0 left-0'
+          />
+          <p className='z-0 px-4 text-xl font-bold text-white text-shadow-lg'>Home Cleaning</p>
         </CardContent>
       </Card>
-      <div className='flex flex-col gap-1'>
+      <div className='z-0 flex flex-col gap-1'>
         <div className='flex items-center gap-2'>
           <Avatar className='max-h-6 max-w-6 rounded-none'>
             <AvatarImage src='https://api.dicebear.com/9.x/glass/svg?radius=20' alt='Avatar' />
