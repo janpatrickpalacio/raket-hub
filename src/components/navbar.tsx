@@ -36,7 +36,7 @@ function NavbarDesktop() {
           Login
         </Link>
         <Link
-          href='#'
+          href={PublicRoutes.SIGN_UP}
           className='rounded-full bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-600'
         >
           Sign Up

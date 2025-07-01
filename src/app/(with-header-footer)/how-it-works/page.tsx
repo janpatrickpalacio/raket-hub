@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function HowItWorksPage() {
   return (
-    <div>
+    <main>
       <HeroSection
         title='Your Guide to RaketHub'
         description="Whether you're looking to hire talent or offer your skills, we've made the process simple, safe, and secure."
@@ -82,6 +82,6 @@ export default function HowItWorksPage() {
           />
         </div>
       </SectionWrapper>
-    </div>
+    </main>
   );
 }
