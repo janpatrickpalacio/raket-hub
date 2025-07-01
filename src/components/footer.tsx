@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import GawaLinkIcon from './gawa-link-icon';
+import RaketHubIcon from './raket-hub-icon';
 
 export default function Footer() {
   return (
@@ -7,7 +7,7 @@ export default function Footer() {
       <div className='container flex flex-col items-center gap-12 py-8 text-white/50'>
         <div className='grid gap-12 sm:grid-cols-4 sm:justify-items-center sm:gap-4'>
           <div className='flex flex-col gap-4'>
-            <GawaLinkIcon className='text-2xl text-white' />
+            <RaketHubIcon className='text-2xl text-white' />
             <p>The Philippines' community marketplace for skills and services.</p>
           </div>
           <div className='flex flex-col gap-3'>
@@ -87,7 +87,7 @@ export default function Footer() {
           </div>
         </div>
         <div className='w-full border-b border-b-white/20' />
-        <p className='text-center'>© 2025 GawaLink Philippines. All rights reserved.</p>
+        <p className='text-center'>© 2025 RaketHub Philippines. All rights reserved.</p>
       </div>
     </footer>
   );

@@ -11,7 +11,10 @@ export default function Home() {
   return (
     <main className='mx-auto [&>section]:px-4'>
       <section className='flex flex-col items-center justify-center gap-2 bg-gradient-to-r from-blue-700 to-cyan-200 py-28 text-center text-white sm:to-80%'>
-        <h1 className='text-4xl font-bold sm:text-6xl'>Gawa na &apos;yan!</h1>
+        <h1 className='text-3xl font-bold sm:text-6xl'>
+          The best Filipino freelancers <br />
+          all in one place.
+        </h1>
         <p className='text-white/80 sm:text-lg'>Find trusted Filipino talent for any project, big or small.</p>
         <div className='mt-8 flex w-full flex-col items-center justify-center gap-4 sm:flex-row'>
           <Input

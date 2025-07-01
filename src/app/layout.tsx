@@ -8,7 +8,7 @@ import Footer from '@/components/footer';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'GawaLink',
+  title: 'RaketHub',
   description: 'Find trusted Filipino talent for any project, big or small.',
 };
 

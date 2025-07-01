@@ -4,11 +4,11 @@ import { cn } from '@/lib/utils';
 
 type Props = BaseComponent;
 
-export default function GawaLinkIcon({ className }: Props) {
+export default function RaketHubIcon({ className }: Props) {
   return (
     <Link href='/' className={cn('text-xl font-bold', className)}>
-      <span>Gawa</span>
-      <span className='text-blue-500'>Link</span>
+      <span>Raket</span>
+      <span className='text-blue-500'>Hub</span>
     </Link>
   );
 }
