@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from './ui/drawer';
 import RaketHubIcon from './raket-hub-icon';
+import { PublicRoutes } from '../../route';
 
 export default function Navbar() {
   return (
@@ -20,7 +21,10 @@ function NavbarDesktop() {
         <Link href='#' className='rounded-lg px-4 py-2 text-sm transition-colors hover:bg-neutral-100'>
           Find Services
         </Link>
-        <Link href='#' className='rounded-lg px-4 py-2 text-sm transition-colors hover:bg-neutral-100'>
+        <Link
+          href={PublicRoutes.HOW_IT_WORKS}
+          className='rounded-lg px-4 py-2 text-sm transition-colors hover:bg-neutral-100'
+        >
           How it Works
         </Link>
         <Link href='#' className='rounded-lg px-4 py-2 text-sm transition-colors hover:bg-neutral-100'>
@@ -64,7 +68,7 @@ function NavbarMobile() {
               Find Services
             </Link>
             <Link
-              href='#'
+              href={PublicRoutes.HOW_IT_WORKS}
               className='rounded-md px-4 py-2 font-semibold text-neutral-600 transition-colors active:bg-blue-100 active:text-blue-600'
             >
               How it Works

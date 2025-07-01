@@ -1,3 +1,4 @@
+import HeroSection from '@/components/hero-section';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ExploreCard } from '@/features/home/components/explore-card';
@@ -10,12 +11,10 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <main className='mx-auto [&>section]:px-4'>
-      <section className='flex flex-col items-center justify-center gap-2 bg-gradient-to-r from-blue-700 to-cyan-200 py-28 text-center text-white sm:to-80%'>
-        <h1 className='text-3xl font-bold sm:text-6xl'>
-          The best Filipino freelancers <br />
-          all in one place.
-        </h1>
-        <p className='text-white/80 sm:text-lg'>Find trusted Filipino talent for any project, big or small.</p>
+      <HeroSection
+        title={`The best Filipino freelancers\nall in one place.`}
+        description='Find trusted Filipino talent for any project, big or small'
+      >
         <div className='mt-8 flex w-full flex-col items-center justify-center gap-4 sm:flex-row'>
           <Input
             className='w-full rounded-full bg-white px-4 py-6 text-sm text-black sm:max-w-[480px]'
@@ -25,7 +24,7 @@ export default function Home() {
             Search
           </Button>
         </div>
-      </section>
+      </HeroSection>
       <section>
         <div className='container mx-auto flex flex-col items-center justify-center gap-2 py-28'>
           <h2 className='text-center text-2xl font-bold sm:text-left sm:text-4xl'>Explore by Category</h2>
@@ -77,17 +76,17 @@ export default function Home() {
             <StepCard
               title='Search & Find'
               description='Describe the service you need and browse through profiles of talented local Raketeros.'
-              step={1}
+              stepIcon={1}
             />
             <StepCard
               title='Book & Pay Securely'
               description='Chat with your chosen pro, agree on the price, and pay securely with GCash, Maya, or card. We hold the payment until the job is done.'
-              step={2}
+              stepIcon={2}
             />
             <StepCard
               title='Get it Done & Rate'
               description='Collaborate with your Raketero, approve the final work, and leave a review to help our community grow.'
-              step={3}
+              stepIcon={3}
             />
           </div>
         </div>
