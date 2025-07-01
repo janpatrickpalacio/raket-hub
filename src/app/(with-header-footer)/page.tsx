@@ -8,7 +8,7 @@ import { Monitor } from 'lucide-react';
 import Link from 'next/link';
 import { PublicRoutes } from '../../../route';
 
-export default function Home() {
+export default async function Home() {
   return (
     <main className='mx-auto [&>section]:px-4'>
       <HeroSection

@@ -1,19 +1,39 @@
+'use client';
+
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from './ui/drawer';
 import RaketHubIcon from './raket-hub-icon';
 import { PublicRoutes } from '../../route';
+import { Button } from './ui/button';
+import { createClient } from '@/lib/supabase/client';
+import { useRouter } from 'next/navigation';
 
-export default function Navbar() {
+interface Props {
+  user: {
+    id: string;
+    email: string;
+  };
+}
+
+export default function Navbar({ user }: Props) {
   return (
     <nav className='sticky top-0 z-50 flex w-full items-center justify-center bg-white/70 px-4 py-3 text-black/80 shadow-sm backdrop-blur-md lg:px-0'>
-      <NavbarDesktop />
+      <NavbarDesktop user={user} />
       <NavbarMobile />
     </nav>
   );
 }
 
-function NavbarDesktop() {
+function NavbarDesktop({ user }: Props) {
+  const supabase = createClient();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.refresh();
+  };
+
   return (
     <div className='container hidden items-center justify-between lg:flex'>
       <RaketHubIcon />
@@ -35,15 +55,23 @@ function NavbarDesktop() {
         </Link>
       </div>
       <div className='flex items-center justify-center gap-4'>
-        <Link href={PublicRoutes.LOGIN} className='text-sm hover:text-black'>
-          Login
-        </Link>
-        <Link
-          href={PublicRoutes.SIGN_UP}
-          className='rounded-full bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-600'
-        >
-          Sign Up
-        </Link>
+        {user ? (
+          <Button onClick={handleLogout} variant='ghost' className='cursor-pointer'>
+            Logout
+          </Button>
+        ) : (
+          <>
+            <Link href={PublicRoutes.LOGIN} className='text-sm hover:text-black'>
+              Login
+            </Link>
+            <Link
+              href={PublicRoutes.SIGN_UP}
+              className='rounded-full bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-600'
+            >
+              Sign Up
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );
