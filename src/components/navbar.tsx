@@ -8,12 +8,10 @@ import { PublicRoutes } from '../../route';
 import { Button } from './ui/button';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
+import { User } from '@supabase/supabase-js';
 
 interface Props {
-  user: {
-    id: string;
-    email: string;
-  };
+  user: User | null;
 }
 
 export default function Navbar({ user }: Props) {
