@@ -32,7 +32,7 @@ function NavbarDesktop() {
         </Link>
       </div>
       <div className='flex items-center justify-center gap-4'>
-        <Link href='#' className='text-sm'>
+        <Link href={PublicRoutes.LOGIN} className='text-sm hover:text-black'>
           Login
         </Link>
         <Link
