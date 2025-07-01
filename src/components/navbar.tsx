@@ -14,16 +14,12 @@ interface Props {
   user: User | null;
 }
 
-export default function Navbar({ user }: Props) {
-  return (
-    <nav className='sticky top-0 z-50 flex w-full items-center justify-center bg-white/70 px-4 py-3 text-black/80 shadow-sm backdrop-blur-md lg:px-0'>
-      <NavbarDesktop user={user} />
-      <NavbarMobile />
-    </nav>
-  );
+interface NavbarProps {
+  user: User | null;
+  onLogoutClick: () => void;
 }
 
-function NavbarDesktop({ user }: Props) {
+export default function Navbar({ user }: Props) {
   const supabase = createClient();
   const router = useRouter();
 
@@ -32,6 +28,15 @@ function NavbarDesktop({ user }: Props) {
     router.refresh();
   };
 
+  return (
+    <nav className='sticky top-0 z-50 flex w-full items-center justify-center bg-white/70 px-4 py-3 text-black/80 shadow-sm backdrop-blur-md lg:px-0'>
+      <NavbarDesktop user={user} onLogoutClick={handleLogout} />
+      <NavbarMobile user={user} onLogoutClick={handleLogout} />
+    </nav>
+  );
+}
+
+function NavbarDesktop({ user, onLogoutClick }: NavbarProps) {
   return (
     <div className='container hidden items-center justify-between lg:flex'>
       <RaketHubIcon />
@@ -54,7 +59,7 @@ function NavbarDesktop({ user }: Props) {
       </div>
       <div className='flex items-center justify-center gap-4'>
         {user ? (
-          <Button onClick={handleLogout} variant='ghost' className='cursor-pointer'>
+          <Button onClick={onLogoutClick} variant='ghost' className='cursor-pointer'>
             Logout
           </Button>
         ) : (
@@ -75,7 +80,7 @@ function NavbarDesktop({ user }: Props) {
   );
 }
 
-function NavbarMobile() {
+function NavbarMobile({ user, onLogoutClick }: NavbarProps) {
   return (
     <div className='container flex items-center justify-between lg:hidden'>
       <RaketHubIcon />
@@ -110,17 +115,23 @@ function NavbarMobile() {
             </Link>
           </div>
           <DrawerFooter>
-            <div className='flex w-full items-center justify-center gap-2 text-center'>
-              <Link href='#' className='w-full text-sm'>
-                Login
-              </Link>
-              <Link
-                href='#'
-                className='w-full rounded-full bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-600'
-              >
-                Sign Up
-              </Link>
-            </div>
+            {user ? (
+              <Button onClick={onLogoutClick} variant='ghost' className='cursor-pointer'>
+                Logout
+              </Button>
+            ) : (
+              <div className='flex w-full items-center justify-center gap-2 text-center'>
+                <Link href={PublicRoutes.LOGIN} className='w-full text-sm'>
+                  Login
+                </Link>
+                <Link
+                  href={PublicRoutes.SIGN_UP}
+                  className='w-full rounded-full bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-600'
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
