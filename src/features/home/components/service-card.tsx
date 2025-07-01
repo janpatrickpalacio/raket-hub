@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
+import Image from 'next/image';
 
 interface Props {
   title: string;
@@ -11,10 +12,13 @@ export default function ServiceCard({ title, price }: Props) {
     <div className='flex flex-col gap-2'>
       <Card className='relative overflow-hidden border-none shadow-none'>
         <CardContent className='flex min-h-40 w-full items-center justify-center'>
-          <img
+          <Image
+            width={500}
+            height={500}
             src={`https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${title}`}
             alt='Avatar'
             className='absolute top-0 left-0'
+            unoptimized
           />
           <p className='z-0 px-4 text-xl font-bold text-white text-shadow-lg'>Home Cleaning</p>
         </CardContent>
