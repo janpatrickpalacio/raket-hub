@@ -1,5 +1,4 @@
 import HeroSection from '@/components/hero-section';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ExploreCard } from '@/features/home/components/explore-card';
 import RaketeroCard from '@/features/home/components/raketero-card';
@@ -7,6 +6,7 @@ import ServiceCard from '@/features/home/components/service-card';
 import StepCard from '@/features/home/components/step-card';
 import { Monitor } from 'lucide-react';
 import Link from 'next/link';
+import { PublicRoutes } from '../../../route';
 
 export default function Home() {
   return (
@@ -20,9 +20,12 @@ export default function Home() {
             className='w-full rounded-full bg-white px-4 py-6 text-sm text-black sm:max-w-[480px]'
             placeholder='What service do you need? (e.g. Logo Design)'
           />
-          <Button className='w-full rounded-full bg-yellow-300 px-8 py-6 font-semibold text-black sm:w-auto'>
+          <Link
+            href={`${PublicRoutes.SERVICES}?q=`}
+            className='w-full cursor-pointer rounded-full bg-yellow-300 px-8 py-3 font-semibold text-black transition-colors hover:bg-yellow-400 sm:w-auto'
+          >
             Search
-          </Button>
+          </Link>
         </div>
       </HeroSection>
       <section>
