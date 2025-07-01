@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from './ui/drawer';
+import GawaLinkIcon from './gawa-link-icon';
 
 export default function Navbar() {
   return (
@@ -14,10 +15,7 @@ export default function Navbar() {
 function NavbarDesktop() {
   return (
     <div className='container hidden items-center justify-between lg:flex'>
-      <Link href='/' className='text-xl font-bold'>
-        <span>Gawa</span>
-        <span className='text-blue-500'>Link</span>
-      </Link>
+      <GawaLinkIcon />
       <div className='flex items-center justify-center gap-4'>
         <Link href='#' className='rounded-lg px-4 py-2 text-sm transition-colors hover:bg-neutral-100'>
           Find Services
@@ -47,10 +45,7 @@ function NavbarDesktop() {
 function NavbarMobile() {
   return (
     <div className='container flex items-center justify-between lg:hidden'>
-      <Link href='/' className='text-xl font-bold'>
-        <span>Gawa</span>
-        <span className='text-blue-500'>Link</span>
-      </Link>
+      <GawaLinkIcon />
       <Drawer direction='left'>
         <DrawerTrigger>
           <Menu />
