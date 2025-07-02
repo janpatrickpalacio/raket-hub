@@ -28,7 +28,7 @@ export default async function ServicesPage() {
         <section className='col-span-full flex flex-col gap-2 lg:col-span-4'>
           <div className='flex items-center justify-between'>
             <div>
-              <h1 className='text-lg font-bold sm:text-3xl'>Local Services in Angeles</h1>
+              <h1 className='text-lg font-bold sm:text-3xl'>All Services</h1>
               <p className='text-sm text-black/50'>Showing 1-12 of 86 results</p>
             </div>
           </div>

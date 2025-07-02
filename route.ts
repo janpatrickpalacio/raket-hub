@@ -5,3 +5,12 @@ export const PublicRoutes = {
   LOGIN: '/login',
   SERVICES: '/services',
 };
+
+export const DashboardRoutes = {
+  DASHBOARD: '/dashboard',
+  ORDERS: '/dashboard/orders',
+  GIGS: '/dashboard/gigs',
+  MESSAGES: '/dashboard/messages',
+  WALLET: '/dashboard/wallet',
+  SETTINGS: '/dashboard/settings',
+};

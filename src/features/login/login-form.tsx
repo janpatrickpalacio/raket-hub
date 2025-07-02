@@ -8,6 +8,7 @@ import { Loader } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
+import { DashboardRoutes } from '../../../route';
 
 export default function LoginForm() {
   const [email, setEmail] = useState<string>('');
@@ -33,7 +34,7 @@ export default function LoginForm() {
       return;
     }
 
-    router.refresh();
+    router.replace(DashboardRoutes.DASHBOARD);
   };
 
   return (

@@ -17,9 +17,10 @@ export default function ServiceCard({ title, price }: Props) {
             height={500}
             src={`https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${title}`}
             alt='Avatar'
-            className='absolute top-0 left-0'
+            className='absolute top-1/2 left-0 w-full -translate-y-1/2'
             unoptimized
           />
+          <div className='absolute top-1/2 left-0 z-0 h-full w-full -translate-y-1/2 bg-black/5' />
           <p className='z-0 px-4 text-xl font-bold text-white text-shadow-lg'>Home Cleaning</p>
         </CardContent>
       </Card>
