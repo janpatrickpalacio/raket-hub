@@ -9,7 +9,8 @@ export const PublicRoutes = {
 export const DashboardRoutes = {
   DASHBOARD: '/dashboard',
   ORDERS: '/dashboard/orders',
-  GIGS: '/dashboard/gigs',
+  RAKETS: '/dashboard/rakets',
+  RAKETS_NEW: '/dashboard/rakets/new',
   MESSAGES: '/dashboard/messages',
   WALLET: '/dashboard/wallet',
   SETTINGS: '/dashboard/settings',

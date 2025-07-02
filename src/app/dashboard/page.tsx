@@ -1,13 +1,21 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
+import DashboardPageWrapper from '@/features/dashboard/components/dashboard-page-wrapper';
+import { createClient } from '@/lib/supabase/server';
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
-    <div className='w-full'>
-      <h1 className='text-3xl font-bold'>Dashboard Overview</h1>
-      <p className='text-black/70'>Welcome back, Juan! Here&apos;s what&apos;s happening today.</p>
-      <div className='mt-8 grid w-full grid-cols-4 gap-6'>
+    <DashboardPageWrapper
+      title='Dashboard'
+      description={`Welcome back, ${user?.user_metadata?.first_name}! Here's what's happening today.`}
+    >
+      <div className='grid w-full grid-cols-4 gap-6'>
         <Card className='justify-center shadow-md'>
           <CardContent>
             <p className='text-sm text-black/70'>Active Orders</p>
@@ -71,6 +79,6 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </DashboardPageWrapper>
   );
 }

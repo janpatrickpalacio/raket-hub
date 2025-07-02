@@ -10,21 +10,35 @@ interface Props {
 export default function ServiceCard({ service }: Props) {
   return (
     <div className='flex flex-col gap-2'>
-      <Card className='relative overflow-hidden border-none shadow-none'>
-        <CardContent className='flex min-h-40 w-full items-center justify-center'>
-          <Image
-            width={1000}
-            height={500}
-            src={`https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${service?.title}`}
-            alt='Service cover image'
-            className='absolute top-1/2 left-0 w-full -translate-y-1/2'
-            unoptimized
-          />
-          <div className='absolute top-1/2 left-0 z-0 h-full w-full -translate-y-1/2 bg-black/5' />
-          <p className='z-0 px-4 text-xl font-bold text-white text-shadow-lg'>Home Cleaning</p>
+      <Card className='relative max-h-40 min-h-40 overflow-hidden border-none shadow-none'>
+        <CardContent className='flex h-full w-full items-center justify-center px-0'>
+          {service.raketero.avatar_url ? (
+            <>
+              <Image
+                width={1000}
+                height={500}
+                src={service.raketero.avatar_url}
+                alt='Service cover image'
+                className='object-contain'
+              />
+            </>
+          ) : (
+            <>
+              <Image
+                width={1000}
+                height={500}
+                src={`https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${service?.title}`}
+                alt='Service cover image'
+                className='absolute top-1/2 left-0 w-full -translate-y-1/2'
+                unoptimized
+              />
+              <div className='absolute top-0 left-0 z-0 h-full w-full bg-black/5' />
+              <p className='z-0 px-4 text-xl font-bold text-white text-shadow-lg'>Home Cleaning</p>
+            </>
+          )}
         </CardContent>
       </Card>
-      <div className='z-0 flex flex-col gap-1'>
+      <div className='z-0 grid h-full grid-rows-[auto_1fr_auto] gap-1'>
         <div className='flex items-center gap-2'>
           <Avatar className='max-h-6 max-w-6 rounded-none'>
             <AvatarImage
@@ -43,7 +57,7 @@ export default function ServiceCard({ service }: Props) {
             {service?.raketero.first_name} {service?.raketero.last_name}
           </p>
         </div>
-        <p className='text-lg'>{service?.title}</p>
+        <p>{service?.title}</p>
         <p className='text-lg font-bold'>From &#x20B1;{service?.price.toLocaleString() || '0.00'}</p>
       </div>
     </div>

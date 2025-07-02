@@ -47,8 +47,8 @@ const menuItems = [
     icon: ClipboardList,
   },
   {
-    label: 'My Gigs',
-    href: '/dashboard/gigs',
+    label: 'My Rakets',
+    href: '/dashboard/rakets',
     icon: BriefcaseBusiness,
   },
   {
