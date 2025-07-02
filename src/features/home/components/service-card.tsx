@@ -13,7 +13,7 @@ export default function ServiceCard({ title, price }: Props) {
       <Card className='relative overflow-hidden border-none shadow-none'>
         <CardContent className='flex min-h-40 w-full items-center justify-center'>
           <Image
-            width={500}
+            width={1000}
             height={500}
             src={`https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${title}`}
             alt='Avatar'

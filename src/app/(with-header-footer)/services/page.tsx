@@ -1,3 +1,4 @@
+import { Input } from '@/components/ui/input';
 import {
   Pagination,
   PaginationContent,
@@ -7,7 +8,8 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import ServiceCard from '@/features/home/components/service-card';
-import FilterSection from '@/features/services/components/filter-section';
+import FilterSectionDesktop from '@/features/services/components/filter-section-desktop';
+import FilterSectionMobile from '@/features/services/components/filter-section-mobile';
 import { createClient } from '@/lib/supabase/server';
 
 export default async function ServicesPage() {
@@ -20,13 +22,21 @@ export default async function ServicesPage() {
   }
 
   return (
-    <div className='bg-neutral-50'>
+    <div className='bg-neutral-50 px-4'>
       <main className='relative container mx-auto grid min-h-[80dvh] grid-cols-5 gap-8 py-10'>
-        <FilterSection categories={categories} subcategories={subcategories} />
-        <section className='col-span-4 flex flex-col gap-2'>
-          <h1 className='text-3xl font-bold'>Local Services in Angeles</h1>
-          <p className='text-black/50'>Showing 1-12 of 86 results</p>
-          <div className='mt-4 grid grid-cols-3 gap-6'>
+        <FilterSectionDesktop categories={categories} subcategories={subcategories} />
+        <section className='col-span-full flex flex-col gap-2 lg:col-span-4'>
+          <div className='flex items-center justify-between'>
+            <div>
+              <h1 className='text-lg font-bold sm:text-3xl'>Local Services in Angeles</h1>
+              <p className='text-sm text-black/50'>Showing 1-12 of 86 results</p>
+            </div>
+          </div>
+          <div className='flex items-center gap-2 lg:hidden'>
+            <Input placeholder='Search..' className='bg-white text-sm' />
+            <FilterSectionMobile categories={categories} subcategories={subcategories} />
+          </div>
+          <div className='mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
             <ServiceCard title='Condo Cleaning for 2-Bedrooms' price={100} />
             <ServiceCard title='Condo Cleaning for 2-Bedrooms' price={100} />
             <ServiceCard title='Condo Cleaning for 2-Bedrooms' price={100} />

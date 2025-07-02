@@ -13,7 +13,7 @@ interface Props {
   subcategories: Database['public']['Tables']['subcategories']['Row'][] | null;
 }
 
-export default function FilterSection({ categories, subcategories }: Props) {
+export default function FilterSectionDesktop({ categories, subcategories }: Props) {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
   const isSubcategoryDisabled = !selectedCategoryId || (subcategories?.length ?? 0) === 0;
   const filteredSubcategories = useMemo(
@@ -28,7 +28,7 @@ export default function FilterSection({ categories, subcategories }: Props) {
   };
 
   return (
-    <aside className='sticky top-0 left-0 flex w-full flex-col gap-4'>
+    <div className='sticky top-0 left-0 hidden w-full flex-col gap-4 lg:flex'>
       <h2 className='text-2xl font-bold'>Filters</h2>
       <div className='flex flex-col gap-6'>
         <div className='flex flex-col gap-3'>
@@ -114,6 +114,6 @@ export default function FilterSection({ categories, subcategories }: Props) {
           </RadioGroup>
         </div>
       </div>
-    </aside>
+    </div>
   );
 }
