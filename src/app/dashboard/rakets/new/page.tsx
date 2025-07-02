@@ -9,7 +9,6 @@ import { Textarea } from '@/components/ui/textarea';
 import DashboardPageWrapper from '@/features/dashboard/components/dashboard-page-wrapper';
 import useServiceContext from '@/features/services/contexts/service-context';
 import { ImagePlus } from 'lucide-react';
-import Link from 'next/link';
 import { ChangeEvent, useMemo, useRef, useState } from 'react';
 
 export default function DashboardRaketsNewPage() {
@@ -154,15 +153,8 @@ function PricingStep() {
 }
 
 function DescriptionAndGalleryStep() {
-  const [selectedPricingType, setSelectedPricingType] = useState<string>('Fixed');
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const fileInputRef = useRef(null);
-
-  const handleSelectPricingType = (value: string): void => {
-    if (value === selectedPricingType) return;
-
-    setSelectedPricingType(value);
-  };
+  const [, setSelectedImage] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -187,7 +179,7 @@ function DescriptionAndGalleryStep() {
               <ImagePlus size={40} className='mb-4 text-neutral-400' />
               <p className='text-sm'>
                 <button
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={() => fileInputRef?.current?.click()}
                   className='cursor-pointer text-blue-600 hover:text-blue-700'
                 >
                   Upload a file
