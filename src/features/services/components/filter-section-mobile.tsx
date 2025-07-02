@@ -7,17 +7,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Database } from '@/lib/supabase/types';
 import { Filter } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import useServiceContext from '../contexts/service-context';
 
-interface Props {
-  categories: Database['public']['Tables']['categories']['Row'][] | null;
-  subcategories: Database['public']['Tables']['subcategories']['Row'][] | null;
-}
-
-export default function FilterSectionMobile({ categories, subcategories }: Props) {
+export default function FilterSectionMobile() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
+  const { categories, subcategories } = useServiceContext();
   const isSubcategoryDisabled = !selectedCategoryId || (subcategories?.length ?? 0) === 0;
   const filteredSubcategories = useMemo(
     () => subcategories?.filter(subcategory => subcategory.category_id === Number(selectedCategoryId)),

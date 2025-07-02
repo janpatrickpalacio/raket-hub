@@ -8,3 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function userAvatarFallback({ seed }: { seed: string }) {
   return `https://api.dicebear.com/9.x/glass/svg?seed=${seed}`;
 }
+
+export function createArray(length: number) {
+  return Array.from({ length }, (_, index) => index);
+}
