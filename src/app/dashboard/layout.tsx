@@ -2,7 +2,7 @@ import DashboardSidebar from '@/components/dashboard-sidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { createClient } from '@/lib/supabase/server';
 import { notFound, redirect } from 'next/navigation';
-import { PublicRoutes } from '../../../route';
+import { AuthRoutes } from '../../../route';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -11,7 +11,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(PublicRoutes.LOGIN);
+    redirect(AuthRoutes.LOGIN);
   }
 
   const { data: profile } = await supabase.from('users').select().eq('id', user.id).single();

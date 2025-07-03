@@ -1,5 +1,8 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+'use client';
+
 import { Card, CardContent } from '@/components/ui/card';
+import UserAvatar from '@/components/user-avatar';
+import useServiceContext from '@/features/services/contexts/service-context';
 import { ServiceWithRaketero } from '@/lib/supabase/custom-types';
 import Image from 'next/image';
 
@@ -8,16 +11,20 @@ interface Props {
 }
 
 export default function ServiceCard({ service }: Props) {
+  const { categories, subcategories } = useServiceContext();
+  const subcategory = subcategories.find(subcategory => subcategory.id === service.subcategory_id);
+  const category = categories.find(category => category.id === subcategory?.category_id);
+
   return (
     <div className='flex flex-col gap-2'>
       <Card className='relative max-h-40 min-h-40 overflow-hidden border-none shadow-none'>
         <CardContent className='flex h-full w-full items-center justify-center px-0'>
-          {service.raketero.avatar_url ? (
+          {service.cover_image_url ? (
             <>
               <Image
                 width={1000}
                 height={500}
-                src={service.raketero.avatar_url}
+                src={service.cover_image_url}
                 alt='Service cover image'
                 className='object-contain'
               />
@@ -33,26 +40,23 @@ export default function ServiceCard({ service }: Props) {
                 unoptimized
               />
               <div className='absolute top-0 left-0 z-0 h-full w-full bg-black/5' />
-              <p className='z-0 px-4 text-xl font-bold text-white text-shadow-lg'>Home Cleaning</p>
+              <div className='z-0 flex flex-col items-center gap-2 px-4 text-center'>
+                <p className='font-bold text-white text-shadow-lg'>{category?.name}</p>
+                <p className='text-xs font-semibold text-white text-shadow-lg'>{subcategory?.name}</p>
+              </div>
             </>
           )}
         </CardContent>
       </Card>
       <div className='z-0 grid h-full grid-rows-[auto_1fr_auto] gap-1'>
         <div className='flex items-center gap-2'>
-          <Avatar className='max-h-6 max-w-6 rounded-none'>
-            <AvatarImage
-              src={
-                service?.raketero.avatar_url ||
-                `https://api.dicebear.com/9.x/glass/svg?radius=20&seed=${service?.raketero.username}`
-              }
-              alt='Avatar'
-            />
-            <AvatarFallback>
-              {service.raketero.first_name[0].toUpperCase()}
-              {service.raketero.last_name[0].toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar
+            user={{
+              avatar_url: service.raketero.avatar_url,
+              first_name: service.raketero.first_name,
+              last_name: service.raketero.last_name,
+            }}
+          />
           <p className='text-sm font-semibold'>
             {service?.raketero.first_name} {service?.raketero.last_name}
           </p>

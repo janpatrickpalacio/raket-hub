@@ -3,7 +3,7 @@
 import RaketHubIcon from '@/components/raket-hub-icon';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
-import { DashboardRoutes, PublicRoutes } from '../../../route';
+import { AuthRoutes, DashboardRoutes } from '../../../route';
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
@@ -42,7 +42,7 @@ export default function SignUpPageContent() {
             <CardTitle className='text-2xl'>Create your account</CardTitle>
             <CardDescription className='mt-2'>
               Already have an account?{' '}
-              <Link href={PublicRoutes.LOGIN} className='text-blue-600'>
+              <Link href={AuthRoutes.LOGIN} className='text-blue-600'>
                 Log in
               </Link>
             </CardDescription>

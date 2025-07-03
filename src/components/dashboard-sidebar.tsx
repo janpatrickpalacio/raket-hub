@@ -21,15 +21,15 @@ import {
   Wallet,
 } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
-import { cn, userAvatarFallback } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import RaketHubIcon from './raket-hub-icon';
 import { Separator } from './ui/separator';
 import { FormEvent, ForwardRefExoticComponent, RefAttributes } from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { createClient } from '@/lib/supabase/client';
 import { Database } from '@/lib/supabase/types';
-import { DashboardRoutes } from '../../route';
-import { Avatar, AvatarImage } from './ui/avatar';
+import { AuthRoutes, DashboardRoutes } from '../../route';
+import UserAvatar from './user-avatar';
 
 interface Props {
   user: Database['public']['Tables']['users']['Row'];
@@ -71,7 +71,7 @@ export default function DashboardSidebar({ user }: Props) {
   const handleLogout = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     await supabase.auth.signOut();
-    router.refresh();
+    router.push(AuthRoutes.LOGIN);
   };
 
   return (
@@ -94,9 +94,7 @@ export default function DashboardSidebar({ user }: Props) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className='cursor-pointer'>
-                  <Avatar className='h-6 w-6'>
-                    <AvatarImage src={user?.avatar_url || userAvatarFallback({ seed: user?.email })} alt='Avatar' />
-                  </Avatar>{' '}
+                  <UserAvatar user={user} />
                   {user?.first_name} {user?.last_name}
                   <ChevronUp className='ml-auto' />
                 </SidebarMenuButton>

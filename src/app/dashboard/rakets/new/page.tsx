@@ -1,4 +1,12 @@
 'use client';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -10,25 +18,46 @@ import DashboardPageWrapper from '@/features/dashboard/components/dashboard-page
 import useServiceContext from '@/features/services/contexts/service-context';
 import { ImagePlus } from 'lucide-react';
 import { ChangeEvent, useMemo, useRef, useState } from 'react';
+import { DashboardRoutes } from '../../../../../route';
+import useRequireAuth from '@/hooks/use-require-auth';
 
 export default function DashboardRaketsNewPage() {
+  useRequireAuth();
+
   return (
-    <DashboardPageWrapper
-      title='Create Your Raket'
-      description='Fill out the details below to get your service listed on the marketplace.'
-    >
-      <form className='flex flex-col gap-8'>
-        <RaketOverviewStep />
-        <PricingStep />
-        <DescriptionAndGalleryStep />
-        <div className='flex w-full items-center justify-end gap-4'>
-          <Button variant='outline' className='cursor-pointer'>
-            Save as Draft
-          </Button>
-          <Button className='cursor-pointer bg-blue-600 hover:bg-blue-700'>Publish Raket</Button>
-        </div>
-      </form>
-    </DashboardPageWrapper>
+    <div className='flex flex-col gap-4'>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href={DashboardRoutes.DASHBOARD}>Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href={DashboardRoutes.RAKETS}>Rakets</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Create New Raket</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <DashboardPageWrapper
+        title='Create Your Raket'
+        description='Fill out the details below to get your service listed on the marketplace.'
+      >
+        <form className='flex flex-col gap-8'>
+          <RaketOverviewStep />
+          <PricingStep />
+          <DescriptionAndGalleryStep />
+          <div className='flex w-full items-center justify-end gap-4'>
+            <Button variant='outline' className='cursor-pointer'>
+              Save as Draft
+            </Button>
+            <Button className='cursor-pointer bg-blue-600 hover:bg-blue-700'>Publish Raket</Button>
+          </div>
+        </form>
+      </DashboardPageWrapper>
+    </div>
   );
 }
 
