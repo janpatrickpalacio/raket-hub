@@ -20,8 +20,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const supabase = await createClient();
-  const { data: categories, error: categoriesError } = await supabase.from('categories').select('*');
-  const { data: subcategories, error: subcategoriesError } = await supabase.from('subcategories').select('*');
+  const { data: categories, error: categoriesError } = await supabase.from('categories').select('*').order('name');
+  const { data: subcategories, error: subcategoriesError } = await supabase
+    .from('subcategories')
+    .select('*')
+    .order('name');
 
   if (categoriesError || subcategoriesError) {
     throw new Error(categoriesError?.message || subcategoriesError?.message);
