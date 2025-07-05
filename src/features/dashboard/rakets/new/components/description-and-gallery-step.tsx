@@ -89,6 +89,16 @@ export function DescriptionAndGalleryStep() {
     updateGalleryImageFiles(newFiles);
   };
 
+  const handleRemoveCoverImage = (): void => {
+    URL.revokeObjectURL(coverImageFile?.blobUrl || '');
+    updateCoverImageFile(null);
+  };
+
+  const handleRemoveGalleryImage = (index: number): void => {
+    URL.revokeObjectURL(galleryImageFiles[index].blobUrl);
+    updateGalleryImageFiles(galleryImageFiles.filter((_, i) => i !== index));
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -124,7 +134,7 @@ export function DescriptionAndGalleryStep() {
                   <button
                     type='button'
                     className='absolute top-0 right-0 m-2 cursor-pointer rounded-full bg-black p-1 text-white'
-                    onClick={() => updateCoverImageFile(null)}
+                    onClick={handleRemoveCoverImage}
                   >
                     <X size={20} />
                   </button>
@@ -161,7 +171,7 @@ export function DescriptionAndGalleryStep() {
             <Label htmlFor='gallery'>Image Gallery</Label>
             {galleryImageFiles.length > 0 ? (
               <div className='grid grid-cols-3 gap-4'>
-                {galleryImageFiles.map(file => (
+                {galleryImageFiles.map((file, index) => (
                   <div key={file.blobUrl} className='relative overflow-hidden rounded-sm border-2'>
                     <Image
                       src={file.blobUrl}
@@ -173,7 +183,7 @@ export function DescriptionAndGalleryStep() {
                     <button
                       type='button'
                       className='absolute top-0 right-0 m-2 cursor-pointer rounded-full bg-black p-1 text-white hover:bg-neutral-800'
-                      onClick={() => updateGalleryImageFiles(galleryImageFiles.filter(f => f.blobUrl !== file.blobUrl))}
+                      onClick={() => handleRemoveGalleryImage(index)}
                     >
                       <X size={20} />
                     </button>

@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import NextTopLoader from 'nextjs-toploader';
 import { createClient } from '@/lib/supabase/server';
 import { ServiceProvider } from '@/features/services/contexts/service-context';
+import { Toaster } from '@/components/ui/sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -35,6 +36,7 @@ export default async function RootLayout({
         <ThemeProvider attribute='class' defaultTheme='light' enableSystem disableTransitionOnChange>
           <NextTopLoader showSpinner={false} />
           <ServiceProvider value={{ categories, subcategories }}>{children}</ServiceProvider>
+          <Toaster position='top-center' />
         </ThemeProvider>
       </body>
     </html>

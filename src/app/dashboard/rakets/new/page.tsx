@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import DashboardPageWrapper from '@/features/dashboard/components/dashboard-page-wrapper';
-import { FormEvent, useEffect } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { AuthRoutes, DashboardRoutes } from '@/routes';
 import AuthRedirect from '@/components/auth-redirect';
 import { useRaketFormStore } from '@/features/dashboard/rakets/stores/useRaketFormStore';
@@ -19,8 +19,11 @@ import { useRouter } from 'next/navigation';
 import { DescriptionAndGalleryStep } from '@/features/dashboard/rakets/new/components/description-and-gallery-step';
 import { PricingStep } from '@/features/dashboard/rakets/new/components/pricing-step';
 import { RaketOverviewStep } from '@/features/dashboard/rakets/new/components/raket-overview-step';
+import { toast } from 'sonner';
+import { Loader } from 'lucide-react';
 
 export default function DashboardRaketsNewPage() {
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const router = useRouter();
 
   const {
@@ -37,6 +40,7 @@ export default function DashboardRaketsNewPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+    setSubmitting(true);
     const supabase = createClient();
     const uuid = generateUUID();
 
@@ -62,7 +66,9 @@ export default function DashboardRaketsNewPage() {
     );
 
     if (coverImageFileError) {
-      throw new Error('Error:', coverImageFileError);
+      toast.error(`Error: ${coverImageFileError.message}`);
+      setSubmitting(false);
+      return;
     }
 
     const galleryImageFileUrls = await Promise.all(
@@ -92,9 +98,12 @@ export default function DashboardRaketsNewPage() {
     });
 
     if (error) {
-      throw new Error('Error:', error);
+      toast.error(`Error: ${error.message}`);
+      setSubmitting(false);
+      return;
     }
 
+    toast.success('Raket created successfully');
     router.replace(DashboardRoutes.RAKETS);
   };
 
@@ -140,7 +149,15 @@ export default function DashboardRaketsNewPage() {
               <Button type='button' variant='outline' className='cursor-pointer' disabled>
                 Save as Draft
               </Button>
-              <Button className='cursor-pointer bg-blue-600 hover:bg-blue-700'>Publish Raket</Button>
+              <Button className='cursor-pointer bg-blue-600 hover:bg-blue-700' disabled={submitting}>
+                {submitting ? (
+                  <span className='flex items-center gap-2'>
+                    <Loader className='animate-spin' /> Publishing...
+                  </span>
+                ) : (
+                  'Publish Raket'
+                )}
+              </Button>
             </div>
           </form>
         </DashboardPageWrapper>
