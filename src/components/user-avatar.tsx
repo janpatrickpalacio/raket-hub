@@ -5,7 +5,7 @@ import { Database } from '@/lib/supabase/types';
 import { BaseComponent } from '../../types';
 
 interface Props extends BaseComponent {
-  user: Pick<Database['public']['Tables']['users']['Row'], 'avatar_url' | 'first_name' | 'last_name'>;
+  user: Pick<Database['public']['Tables']['users']['Row'], 'id' | 'avatar_url' | 'first_name' | 'last_name'>;
 }
 
 export default function UserAvatar({ user, className }: Props) {

@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   devIndicators: {
     position: 'bottom-right',
   },
+  images: {
+    loader: 'custom',
+    loaderFile: './supabase-image-loader.ts',
+  },
 };
 
 export default nextConfig;

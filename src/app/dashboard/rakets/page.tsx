@@ -25,10 +25,10 @@ export default async function DashboardRaketsPage() {
         description={`Rakets are the services you've created. You can view and manage them here.`}
       >
         {hasServices ? (
-          <div className='grid gap-8 sm:grid-cols-2 lg:grid-cols-4'>
+          <div className='grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
             <Link
               href={DashboardRoutes.RAKETS_NEW}
-              className='flex max-h-40 flex-col items-center justify-center rounded-lg border-2 border-dashed bg-white p-8 text-sm text-neutral-500 transition-colors hover:bg-neutral-50'
+              className='flex aspect-video w-full flex-col items-center justify-center rounded-lg border-2 border-dashed bg-white p-8 text-sm text-neutral-500 transition-colors hover:bg-neutral-50'
             >
               <FolderPlus size={40} className='mb-4 text-neutral-400' />
               Create New Raket
@@ -43,7 +43,7 @@ export default async function DashboardRaketsPage() {
             <p className='text-sm'>No rakets yet!</p>
             <p className='text-sm text-black/50'>Start earning by offering your skills to the community.</p>
             <Link
-              href='#'
+              href={DashboardRoutes.RAKETS_NEW}
               className='mt-6 rounded-sm bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700'
             >
               Create Your First Raket

@@ -13,25 +13,24 @@ interface Props {
 export default function ServiceCard({ service }: Props) {
   const { categories, subcategories } = useServiceContext();
   const subcategory = subcategories.find(subcategory => subcategory.id === service.subcategory_id);
-  const category = categories.find(category => category.id === subcategory?.category_id);
 
   return (
-    <div className='flex flex-col gap-2'>
-      <Card className='relative max-h-40 min-h-40 overflow-hidden border-none shadow-none'>
-        <CardContent className='flex h-full w-full items-center justify-center px-0'>
-          {service.cover_image_url ? (
-            <>
-              <Image
-                width={1000}
-                height={500}
-                src={service.cover_image_url}
-                alt='Service cover image'
-                className='object-contain'
-              />
-            </>
+    <div className='grid h-auto grid-rows-[auto_1fr_auto] gap-1'>
+      <Card className='relative overflow-hidden border-none py-0 shadow-sm'>
+        <CardContent className='items-center justify-center px-0'>
+          <Image
+            width={1000}
+            height={200}
+            quality={20}
+            src={service.cover_image_url || `https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${service?.title}`}
+            alt='Service cover image'
+            className='aspect-video h-full w-full object-cover'
+          />
+          {/* {service.cover_image_url ? (
+            <></>
           ) : (
             <>
-              <Image
+               <Image
                 width={1000}
                 height={500}
                 src={`https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${service?.title}`}
@@ -43,15 +42,16 @@ export default function ServiceCard({ service }: Props) {
               <div className='z-0 flex flex-col items-center gap-2 px-4 text-center'>
                 <p className='font-bold text-white text-shadow-lg'>{category?.name}</p>
                 <p className='text-xs font-semibold text-white text-shadow-lg'>{subcategory?.name}</p>
-              </div>
+              </div> 
             </>
-          )}
+          )} */}
         </CardContent>
       </Card>
-      <div className='z-0 grid h-full grid-rows-[auto_1fr_auto] gap-1'>
+      <div className='z-0 mt-2 grid h-fit grid-rows-[auto_auto_auto] gap-0'>
         <div className='flex items-center gap-2'>
           <UserAvatar
             user={{
+              id: service.raketero.id,
               avatar_url: service.raketero.avatar_url,
               first_name: service.raketero.first_name,
               last_name: service.raketero.last_name,
@@ -62,8 +62,8 @@ export default function ServiceCard({ service }: Props) {
           </p>
         </div>
         <p>{service?.title}</p>
-        <p className='text-lg font-bold'>From &#x20B1;{service?.price.toLocaleString() || '0.00'}</p>
       </div>
+      <p className='mt-1 font-bold'>From &#x20B1;{service?.price.toLocaleString() || '0.00'}</p>
     </div>
   );
 }
