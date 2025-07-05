@@ -3,7 +3,7 @@ import ServiceCard from '@/features/home/components/service-card';
 import { createClient } from '@/lib/supabase/server';
 import { FolderPlus } from 'lucide-react';
 import Link from 'next/link';
-import { DashboardRoutes } from '../../../../route';
+import { DashboardRoutes } from '@/routes';
 import AuthRedirect from '@/components/auth-redirect';
 
 export default async function DashboardRaketsPage() {

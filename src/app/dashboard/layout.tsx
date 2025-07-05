@@ -2,7 +2,7 @@ import DashboardSidebar from '@/components/dashboard-sidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { createClient } from '@/lib/supabase/server';
 import { notFound, redirect } from 'next/navigation';
-import { AuthRoutes } from '../../../route';
+import { AuthRoutes } from '@/routes';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();

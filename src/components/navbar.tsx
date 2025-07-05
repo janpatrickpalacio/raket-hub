@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { LayoutDashboard, Loader, LogOut, Menu, Settings } from 'lucide-react';
 import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from './ui/drawer';
 import RaketHubIcon from './raket-hub-icon';
-import { AuthRoutes, DashboardRoutes, PublicRoutes } from '../../route';
+import { AuthRoutes, DashboardRoutes, PublicRoutes } from '@/routes';
 import { Button } from './ui/button';
 import { createClient } from '@/lib/supabase/client';
 import { Database } from '@/lib/supabase/types';

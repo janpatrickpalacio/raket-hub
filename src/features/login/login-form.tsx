@@ -8,7 +8,7 @@ import { Loader } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
-import { DashboardRoutes } from '../../../route';
+import { DashboardRoutes } from '@/routes';
 
 export default function LoginForm() {
   const [email, setEmail] = useState<string>('');

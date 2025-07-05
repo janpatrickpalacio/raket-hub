@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
-import { AuthRoutes, DashboardRoutes } from '../../../route';
+import { AuthRoutes, DashboardRoutes } from '@/routes';
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({

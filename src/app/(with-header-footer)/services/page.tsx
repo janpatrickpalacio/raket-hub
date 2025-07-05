@@ -13,7 +13,7 @@ export default async function ServicesPage() {
     .select(
       `
       *,
-      raketero:users(id, first_name, last_name, avatar_url, username)
+      raketero:users(id, first_name, last_name, avatar_url, username, average_rating, total_reviews)
     `
     )
     .range(0, MAX_DISPLAY_PER_PAGE);

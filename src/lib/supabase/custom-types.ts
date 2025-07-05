@@ -4,7 +4,7 @@ type Services = Database['public']['Tables']['services']['Row'];
 
 type RaketeroInfo = Pick<
   Database['public']['Tables']['users']['Row'],
-  'id' | 'first_name' | 'last_name' | 'avatar_url' | 'username'
+  'id' | 'first_name' | 'last_name' | 'avatar_url' | 'username' | 'average_rating' | 'total_reviews'
 >;
 
 export interface ServiceWithRaketero extends Services {

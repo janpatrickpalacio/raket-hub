@@ -28,7 +28,7 @@ import { FormEvent, ForwardRefExoticComponent, RefAttributes } from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { createClient } from '@/lib/supabase/client';
 import { Database } from '@/lib/supabase/types';
-import { AuthRoutes, DashboardRoutes } from '../../route';
+import { AuthRoutes, DashboardRoutes } from '@/routes';
 import UserAvatar from './user-avatar';
 
 interface Props {

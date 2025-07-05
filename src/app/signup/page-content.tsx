@@ -3,7 +3,7 @@
 import RaketHubIcon from '@/components/raket-hub-icon';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
-import { AuthRoutes, DashboardRoutes } from '../../../route';
+import { AuthRoutes, DashboardRoutes } from '@/routes';
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';

@@ -5,7 +5,7 @@ import RaketeroCard from '@/features/home/components/raketero-card';
 import StepCard from '@/features/home/components/step-card';
 import { Monitor } from 'lucide-react';
 import Link from 'next/link';
-import { PublicRoutes } from '../../../route';
+import { PublicRoutes } from '@/routes';
 
 export default async function Home() {
   return (

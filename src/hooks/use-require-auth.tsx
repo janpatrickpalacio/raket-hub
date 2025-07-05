@@ -2,7 +2,7 @@
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { AuthRoutes } from '../../route';
+import { AuthRoutes } from '@/routes';
 
 export default function useRequireAuth() {
   const router = useRouter();
