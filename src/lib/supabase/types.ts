@@ -14,16 +14,19 @@ export type Database = {
           created_at: string
           id: number
           name: string | null
+          slug: string | null
         }
         Insert: {
           created_at?: string
           id?: number
           name?: string | null
+          slug?: string | null
         }
         Update: {
           created_at?: string
           id?: number
           name?: string | null
+          slug?: string | null
         }
         Relationships: []
       }
@@ -99,18 +102,21 @@ export type Database = {
           created_at: string
           id: number
           name: string
+          slug: string | null
         }
         Insert: {
           category_id: number
           created_at?: string
           id?: number
           name: string
+          slug?: string | null
         }
         Update: {
           category_id?: number
           created_at?: string
           id?: number
           name?: string
+          slug?: string | null
         }
         Relationships: [
           {
