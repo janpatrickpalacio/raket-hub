@@ -21,6 +21,7 @@ import { PricingStep } from '@/features/dashboard/rakets/new/components/pricing-
 import { RaketOverviewStep } from '@/features/dashboard/rakets/new/components/raket-overview-step';
 import { toast } from 'sonner';
 import { Loader } from 'lucide-react';
+import slugify from 'slugify';
 
 export default function DashboardRaketsNewPage() {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -83,8 +84,13 @@ export default function DashboardRaketsNewPage() {
       })
     );
 
+    const titleToSlug = slugify(title, { lower: true });
+    const { data: slugExists } = await supabase.from('services').select('slug').eq('slug', titleToSlug).single();
+    let slug = slugExists ? `${titleToSlug}-${uuid}` : titleToSlug;
+
     const { error } = await supabase.from('services').insert({
       id: uuid,
+      slug,
       raketero_id: user.id,
       title: title,
       description,

@@ -17,9 +17,10 @@ import UserAvatar from '@/components/user-avatar';
 import useServiceContext from '@/features/services/contexts/service-context';
 import { createClient } from '@/lib/supabase/client';
 import { ServiceWithRaketero } from '@/lib/supabase/custom-types';
-import { DashboardRoutes } from '@/routes';
+import { DashboardRoutes, PublicRoutes } from '@/routes';
 import { Loader, Star, Trash2 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -37,14 +38,17 @@ export default function ServiceCard({ service }: Props) {
       <Card className='h-full overflow-hidden border-none py-0'>
         <CardContent className='relative flex h-full flex-col px-0'>
           <OwnerActions serviceId={service.id} />
-          <Image
-            width={1000}
-            height={200}
-            quality={20}
-            src={service.cover_image_url || `https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${service?.title}`}
-            alt='Service cover image'
-            className='aspect-video w-full object-cover'
-          />
+          <Link href={`${PublicRoutes.SERVICES}/${service.slug}`}>
+            <Image
+              width={1000}
+              height={200}
+              quality={20}
+              src={service.cover_image_url || `https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${service?.title}`}
+              alt='Service cover image'
+              className='aspect-video w-full object-cover'
+            />
+          </Link>
+
           <div className='mt-2 flex h-full flex-col gap-2 px-4 pt-1 pb-3'>
             <div className='grid gap-0 bg-white'>
               <Badge className='line-clamp-1 bg-blue-400'>{subcategory?.name}</Badge>

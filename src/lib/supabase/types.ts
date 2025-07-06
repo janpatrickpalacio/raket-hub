@@ -31,44 +31,50 @@ export type Database = {
         Row: {
           cover_image_url: string | null
           created_at: string
-          delivery_days: number | null
-          description: string | null
+          delivery_days: number
+          description: string
           gallery_image_urls: string[] | null
           id: string
           is_active: boolean | null
+          number_of_revisions: number | null
           price: number
           pricing_type: Database["public"]["Enums"]["pricing_type_enum"]
           raketero_id: string
+          slug: string
           subcategory_id: number
-          title: string | null
+          title: string
         }
         Insert: {
           cover_image_url?: string | null
           created_at?: string
-          delivery_days?: number | null
-          description?: string | null
+          delivery_days?: number
+          description: string
           gallery_image_urls?: string[] | null
           id?: string
           is_active?: boolean | null
+          number_of_revisions?: number | null
           price?: number
           pricing_type: Database["public"]["Enums"]["pricing_type_enum"]
           raketero_id: string
+          slug: string
           subcategory_id: number
-          title?: string | null
+          title: string
         }
         Update: {
           cover_image_url?: string | null
           created_at?: string
-          delivery_days?: number | null
-          description?: string | null
+          delivery_days?: number
+          description?: string
           gallery_image_urls?: string[] | null
           id?: string
           is_active?: boolean | null
+          number_of_revisions?: number | null
           price?: number
           pricing_type?: Database["public"]["Enums"]["pricing_type_enum"]
           raketero_id?: string
+          slug?: string
           subcategory_id?: number
-          title?: string | null
+          title?: string
         }
         Relationships: [
           {
