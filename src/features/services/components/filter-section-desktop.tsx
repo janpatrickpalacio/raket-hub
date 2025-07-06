@@ -1,12 +1,12 @@
 'use client';
 
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useMemo, useState } from 'react';
 import useServiceContext from '../contexts/service-context';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { Button } from '@/components/ui/button';
 
 export default function FilterSectionDesktop() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
@@ -25,7 +25,6 @@ export default function FilterSectionDesktop() {
 
   return (
     <div className='sticky top-0 left-0 hidden w-full flex-col gap-4 lg:flex'>
-      <h2 className='text-2xl font-bold'>Filters</h2>
       <div className='flex flex-col gap-6'>
         <div className='flex flex-col gap-3'>
           <Label>Category</Label>
@@ -71,43 +70,61 @@ export default function FilterSectionDesktop() {
         </div>
         <div className='flex flex-col gap-3'>
           <Label>Raketero Level</Label>
-          <div className='flex items-center gap-2 text-black/80'>
-            <Checkbox className='bg-white' id='top-rated' />
-            <Label htmlFor='top-rated'>Top Rated</Label>
-          </div>
-          <div className='flex items-center gap-2 text-black/80'>
-            <Checkbox className='bg-white' id='level-2' />
-            <Label htmlFor='level-2'>Level 2</Label>
-          </div>
-          <div className='flex items-center gap-2 text-black/80'>
-            <Checkbox className='bg-white' id='level-1' />
-            <Label htmlFor='level-1'>Level 1</Label>
-          </div>
-          <div className='flex items-center gap-2 text-black/80'>
-            <Checkbox className='bg-white' id='new-raketero' />
-            <Label htmlFor='new-raketero'>New Raketero</Label>
-          </div>
+          <ToggleGroup type='multiple' className='w-full gap-2 rounded-none'>
+            <ToggleGroupItem
+              value='top-rated'
+              className='cursor-pointer !rounded-lg border bg-white px-4 hover:bg-slate-200 hover:!text-black/50 data-[state=on]:bg-slate-200'
+            >
+              Top Rated
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value='level-2'
+              className='cursor-pointer !rounded-lg border bg-white px-4 hover:bg-slate-200 hover:!text-black/50 data-[state=on]:bg-slate-200'
+            >
+              Level 2
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value='level-1'
+              className='cursor-pointer !rounded-lg border bg-white px-4 hover:bg-slate-200 hover:!text-black/50 data-[state=on]:bg-slate-200'
+            >
+              Level 1
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value='new-raketero'
+              className='cursor-pointer !rounded-lg border bg-white px-4 hover:bg-slate-200 hover:!text-black/50 data-[state=on]:bg-slate-200'
+            >
+              New Raketero
+            </ToggleGroupItem>
+          </ToggleGroup>
         </div>
         <div className='flex flex-col gap-3'>
           <Label>Delivery Time</Label>
-          <RadioGroup defaultValue='any'>
-            <div className='flex items-center gap-2 text-black/80'>
-              <RadioGroupItem value='express-24h' id='express-24h' className='bg-white' />
-              <Label htmlFor='express-24h'>Express 24H</Label>
-            </div>
-            <div className='flex items-center gap-2 text-black/80'>
-              <RadioGroupItem value='up-to-3-days' id='up-to-3-days' className='bg-white' />
-              <Label htmlFor='up-to-3-days'>Up to 3 days</Label>
-            </div>
-            <div className='flex items-center gap-2 text-black/80'>
-              <RadioGroupItem value='up-to-7-days' id='up-to-7-days' className='bg-white' />
-              <Label htmlFor='up-to-7-days'>Up to 7 days</Label>
-            </div>
-            <div className='flex items-center gap-2 text-black/80'>
-              <RadioGroupItem value='any' id='any' className='bg-white' />
-              <Label htmlFor='any'>Any</Label>
-            </div>
-          </RadioGroup>
+          <ToggleGroup type='multiple' className='w-full gap-2 rounded-none'>
+            <ToggleGroupItem
+              value='express-24h'
+              className='cursor-pointer !rounded-lg border bg-white px-4 hover:bg-slate-200 hover:!text-black/50 data-[state=on]:bg-slate-200'
+            >
+              Express 24H
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value='up-to-3-days'
+              className='cursor-pointer !rounded-lg border bg-white px-4 hover:bg-slate-200 hover:!text-black/50 data-[state=on]:bg-slate-200'
+            >
+              Up to 3 days
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value='up-to-7-days'
+              className='cursor-pointer !rounded-lg border bg-white px-4 hover:bg-slate-200 hover:!text-black/50 data-[state=on]:bg-slate-200'
+            >
+              Up to 7 days
+            </ToggleGroupItem>
+          </ToggleGroup>
+        </div>
+        <div className='flex w-full gap-4'>
+          <Button variant='outline' className='grow cursor-pointer'>
+            Clear Filters
+          </Button>
+          <Button className='grow cursor-pointer bg-blue-600 hover:bg-blue-700'>Apply Filters</Button>
         </div>
       </div>
     </div>

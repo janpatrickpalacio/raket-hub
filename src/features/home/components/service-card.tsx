@@ -30,8 +30,14 @@ interface Props {
 }
 
 export default function ServiceCard({ service }: Props) {
-  const { subcategories } = useServiceContext();
+  const router = useRouter();
+  const { categories, subcategories } = useServiceContext();
   const subcategory = subcategories.find(subcategory => subcategory.id === service.subcategory_id);
+
+  const handleSubcategoryClick = (): void => {
+    const category = categories.find(category => category.id === subcategory?.category_id);
+    router.push(`${PublicRoutes.SERVICES}?category=${category?.slug}&subcategory=${subcategory?.slug}`);
+  };
 
   return (
     <div className='h-auto'>
@@ -51,7 +57,12 @@ export default function ServiceCard({ service }: Props) {
 
           <div className='mt-2 flex h-full flex-col gap-2 px-4 pt-1 pb-3'>
             <div className='grid gap-0 bg-white'>
-              <Badge className='line-clamp-1 bg-blue-400'>{subcategory?.name}</Badge>
+              <Badge
+                className='line-clamp-1 cursor-pointer bg-slate-500 transition-colors hover:bg-slate-600'
+                onClick={handleSubcategoryClick}
+              >
+                {subcategory?.name}
+              </Badge>
               <div className='my-2 flex items-center gap-2'>
                 <UserAvatar
                   user={{
