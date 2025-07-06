@@ -2,9 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import ServiceViewPageContent from './page-content';
 
 interface Props {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
 export default async function ServiceViewPage({ params }: Props) {
