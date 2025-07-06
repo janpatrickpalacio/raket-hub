@@ -37,7 +37,7 @@ export default function ServiceCard({ service }: Props) {
     <div className='h-auto'>
       <Card className='h-full overflow-hidden border-none py-0'>
         <CardContent className='relative flex h-full flex-col px-0'>
-          <OwnerActions serviceId={service.id} />
+          <OwnerActions serviceSlug={service.slug} />
           <Link href={`${PublicRoutes.SERVICES}/${service.slug}`}>
             <Image
               width={1000}
@@ -104,7 +104,7 @@ export default function ServiceCard({ service }: Props) {
   );
 }
 
-function OwnerActions({ serviceId }: { serviceId: string }) {
+function OwnerActions({ serviceSlug }: { serviceSlug: string }) {
   const [open, setOpen] = useState<boolean>(false);
   const [deleting, setDeleting] = useState<boolean>(false);
   const pathname = usePathname();
@@ -119,7 +119,7 @@ function OwnerActions({ serviceId }: { serviceId: string }) {
     const supabase = createClient();
 
     // Delete service from services table first
-    const { error } = await supabase.from('services').delete().eq('id', serviceId);
+    const { error } = await supabase.from('services').delete().eq('slug', serviceSlug);
 
     if (error) {
       toast.error('Error deleting service');
@@ -132,7 +132,7 @@ function OwnerActions({ serviceId }: { serviceId: string }) {
     } = await supabase.auth.getUser();
 
     // Then delete service images from storage
-    const folderPath = `${user?.id}/${serviceId}`;
+    const folderPath = `${user?.user_metadata.username}/${serviceSlug}`;
     const { data: images } = await supabase.storage.from('services').list(folderPath);
 
     if ((images?.length ?? 0) > 0) {

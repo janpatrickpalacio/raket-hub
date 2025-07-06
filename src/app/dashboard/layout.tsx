@@ -23,7 +23,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <SidebarProvider>
       <DashboardSidebar user={profile} />
-      <main className='w-full bg-blue-50/50 px-8 py-4'>
+      <main className='w-full bg-slate-50 px-8 py-4'>
         <SidebarTrigger className='mb-4 -ml-6 cursor-pointer' />
         <div className='max-w-6xl'>{children}</div>
       </main>

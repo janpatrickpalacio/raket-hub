@@ -58,11 +58,15 @@ export default function DashboardRaketsNewPage() {
       return;
     }
 
+    const titleToSlug = slugify(title, { lower: true });
+    const { data: slugExists } = await supabase.from('services').select('slug').eq('slug', titleToSlug).single();
+    const slug = slugExists ? `${titleToSlug}-${uuid}` : titleToSlug;
+
     // upload images first in bucket
     const storage = supabase.storage.from('services');
 
     const { data: coverImageFileUrl, error: coverImageFileError } = await storage.upload(
-      `${user?.id}/${uuid}/${generateUUID()}`,
+      `${user?.user_metadata.username}/${slug}/${generateUUID()}`,
       coverImageFile.file
     );
 
@@ -74,7 +78,10 @@ export default function DashboardRaketsNewPage() {
 
     const galleryImageFileUrls = await Promise.all(
       galleryImageFiles.map(async imageFile => {
-        const { data, error } = await storage.upload(`${user?.id}/${uuid}/${generateUUID()}`, imageFile.file);
+        const { data, error } = await storage.upload(
+          `${user?.user_metadata.username}/${slug}/${generateUUID()}`,
+          imageFile.file
+        );
 
         if (error) {
           return '';
@@ -83,10 +90,6 @@ export default function DashboardRaketsNewPage() {
         }
       })
     );
-
-    const titleToSlug = slugify(title, { lower: true });
-    const { data: slugExists } = await supabase.from('services').select('slug').eq('slug', titleToSlug).single();
-    let slug = slugExists ? `${titleToSlug}-${uuid}` : titleToSlug;
 
     const { error } = await supabase.from('services').insert({
       id: uuid,

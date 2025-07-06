@@ -27,7 +27,7 @@ export default async function Home() {
           </Link>
         </div>
       </HeroSection>
-      <div className='[&>section]:even:bg-neutral-50'>
+      <div className='[&>section]:odd:bg-white [&>section]:even:bg-neutral-50'>
         <section>
           <div className='container mx-auto flex flex-col items-center justify-center gap-2 py-28'>
             <h2 className='text-center text-2xl font-bold sm:text-left sm:text-4xl'>Explore by Category</h2>

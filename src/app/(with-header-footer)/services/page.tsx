@@ -26,7 +26,7 @@ export default async function ServicesPage() {
   }
 
   return (
-    <div className='bg-neutral-50 px-4'>
+    <div className='px-4'>
       <main className='relative container mx-auto grid min-h-[80dvh] grid-cols-5 gap-8 py-10'>
         <FilterSectionDesktop />
         <section className='col-span-full flex flex-col gap-2 lg:col-span-4'>

@@ -35,7 +35,7 @@ export default async function RootLayout({
       <head>
         <link rel='icon' href='/favicon.ico' sizes='any' />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} bg-slate-50 antialiased`}>
         <ThemeProvider attribute='class' defaultTheme='light' enableSystem disableTransitionOnChange>
           <NextTopLoader showSpinner={false} />
           <ServiceProvider value={{ categories, subcategories }}>{children}</ServiceProvider>
