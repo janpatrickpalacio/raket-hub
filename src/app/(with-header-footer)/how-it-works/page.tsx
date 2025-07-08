@@ -1,8 +1,8 @@
 import HeroSection from '@/components/hero-section';
 import SectionWrapper from '@/components/section-wrapper';
-import StepCard from '@/features/home/components/step-card';
+import StepCard from '@/components/step-card';
 import FaqItem from '@/features/how-it-works/components/faq-item';
-import { DollarSign, Edit, Link, Lock, Search, ThumbsUp } from 'lucide-react';
+import { Edit, PhilippinePeso, Link, Lock, ThumbsUp, Search } from 'lucide-react';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -55,7 +55,7 @@ export default function HowItWorksPage() {
               variant='yellow'
               title='3. Get Paid'
               description='Once the client approves, your payment (minus our 15% service fee) is sent to your RaketHub wallet. Withdraw your earnings easily to your bank or e-wallet.'
-              stepIcon={<DollarSign size={40} />}
+              stepIcon={<PhilippinePeso size={40} />}
             />
           </div>
         </SectionWrapper>

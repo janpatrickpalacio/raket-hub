@@ -2,6 +2,7 @@ export const PublicRoutes = {
   HOME: '/',
   HOW_IT_WORKS: '/how-it-works',
   SERVICES: '/services',
+  SELL: '/sell'
 };
 
 export const AuthRoutes = {

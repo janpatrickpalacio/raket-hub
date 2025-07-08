@@ -86,7 +86,7 @@ function NavbarDesktop({ user, loading, onLogoutClick }: NavbarProps) {
         >
           How it Works
         </Link>
-        <Link href='#' className='rounded-lg px-4 py-2 text-sm transition-colors hover:bg-neutral-100'>
+        <Link href={PublicRoutes.SELL} className='rounded-lg px-4 py-2 text-sm transition-colors hover:bg-neutral-100'>
           Become a Raketero
         </Link>
       </div>
@@ -182,7 +182,7 @@ function NavbarMobile({ user, loading, onLogoutClick }: NavbarProps) {
               How it Works
             </Link>
             <Link
-              href='#'
+              href={PublicRoutes.SELL}
               className='rounded-md px-4 py-2 font-semibold text-neutral-600 transition-colors active:bg-blue-100 active:text-blue-600'
             >
               Become a Raketero

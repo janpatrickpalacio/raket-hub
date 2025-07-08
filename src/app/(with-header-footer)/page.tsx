@@ -2,7 +2,7 @@ import HeroSection from '@/components/hero-section';
 import { Input } from '@/components/ui/input';
 import { ExploreCard } from '@/features/home/components/explore-card';
 import RaketeroCard from '@/features/home/components/raketero-card';
-import StepCard from '@/features/home/components/step-card';
+import StepCard from '@/components/step-card';
 import { Monitor } from 'lucide-react';
 import Link from 'next/link';
 import { PublicRoutes } from '@/routes';
@@ -108,13 +108,13 @@ export default async function Home() {
           </p>
           <div className='mt-8 flex w-full flex-col items-center gap-4 text-center sm:w-auto sm:flex-row sm:text-left'>
             <Link
-              href='#'
+              href={PublicRoutes.SERVICES}
               className='w-full rounded-full bg-white px-8 py-3 font-bold text-black transition-all hover:scale-105 hover:bg-white/80 sm:w-auto sm:text-lg'
             >
               Find a Service
             </Link>
             <Link
-              href='#'
+              href={PublicRoutes.SELL}
               className='w-full rounded-full bg-yellow-300 px-8 py-3 font-bold text-black transition-all hover:scale-105 hover:bg-yellow-400 sm:w-auto sm:text-lg'
             >
               Become a Raketero
