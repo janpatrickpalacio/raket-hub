@@ -2,7 +2,7 @@ export const PublicRoutes = {
   HOME: '/',
   HOW_IT_WORKS: '/how-it-works',
   SERVICES: '/services',
-  SELL: '/sell'
+  SELL: '/sell',
 };
 
 export const AuthRoutes = {
@@ -18,4 +18,8 @@ export const DashboardRoutes = {
   MESSAGES: '/dashboard/messages',
   WALLET: '/dashboard/wallet',
   SETTINGS: '/dashboard/settings',
+};
+
+export const AdminRoutes = {
+  APPROVAL: '/admin/approval',
 };

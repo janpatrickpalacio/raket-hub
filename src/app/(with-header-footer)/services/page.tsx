@@ -28,6 +28,7 @@ export default async function ServicesPage({ searchParams }: Props) {
       raketero:users(id, first_name, last_name, avatar_url, username, average_rating, total_reviews)
     `
     )
+    .eq('status', 'approved')
     .range(0, MAX_DISPLAY_PER_PAGE);
 
   if (subcategoryParam) {

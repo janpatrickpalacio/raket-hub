@@ -13,12 +13,14 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import UserAvatar from '@/components/user-avatar';
 import useServiceContext from '@/features/services/contexts/service-context';
 import { createClient } from '@/lib/supabase/client';
 import { ServiceWithRaketero } from '@/lib/supabase/custom-types';
+import { cn } from '@/lib/utils';
 import { DashboardRoutes, PublicRoutes } from '@/routes';
-import { Loader, Star, Trash2 } from 'lucide-react';
+import { Info, Loader, Star, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -43,7 +45,7 @@ export default function ServiceCard({ service }: Props) {
     <div className='h-auto'>
       <Card className='h-full overflow-hidden border-none py-0'>
         <CardContent className='relative flex h-full flex-col px-0'>
-          <OwnerActions serviceSlug={service.slug} />
+          <OwnerActions service={service} />
           <Link href={`${PublicRoutes.SERVICES}/${service.slug}`}>
             <Image
               width={1000}
@@ -115,14 +117,29 @@ export default function ServiceCard({ service }: Props) {
   );
 }
 
-function OwnerActions({ serviceSlug }: { serviceSlug: string }) {
+function OwnerActions({ service }: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const [deleting, setDeleting] = useState<boolean>(false);
   const pathname = usePathname();
   const router = useRouter();
-  const showOwnerActions = pathname === DashboardRoutes.RAKETS;
+  const showOwnerDetails = pathname === DashboardRoutes.RAKETS;
 
-  if (!showOwnerActions) return null;
+  if (!showOwnerDetails) return null;
+
+  const statusDetails = {
+    pending: {
+      text: 'Pending',
+      color: 'bg-yellow-500',
+    },
+    approved: {
+      text: 'Approved',
+      color: 'bg-green-600',
+    },
+    rejected: {
+      text: 'Rejected',
+      color: 'bg-red-500',
+    },
+  };
 
   const handleConfirmDelete = async (): Promise<void> => {
     setDeleting(true);
@@ -130,7 +147,7 @@ function OwnerActions({ serviceSlug }: { serviceSlug: string }) {
     const supabase = createClient();
 
     // Delete service from services table first
-    const { error } = await supabase.from('services').delete().eq('slug', serviceSlug);
+    const { error } = await supabase.from('services').delete().eq('slug', service.slug);
 
     if (error) {
       toast.error('Error deleting service');
@@ -143,7 +160,7 @@ function OwnerActions({ serviceSlug }: { serviceSlug: string }) {
     } = await supabase.auth.getUser();
 
     // Then delete service images from storage
-    const folderPath = `${user?.user_metadata.username}/${serviceSlug}`;
+    const folderPath = `${user?.user_metadata.username}/${service.slug}`;
     const { data: images } = await supabase.storage.from('services').list(folderPath);
 
     if ((images?.length ?? 0) > 0) {
@@ -160,33 +177,66 @@ function OwnerActions({ serviceSlug }: { serviceSlug: string }) {
   };
 
   return (
-    <AlertDialog open={open}>
-      <AlertDialogTrigger
-        onClick={() => setOpen(true)}
-        className='absolute top-2 right-2 cursor-pointer rounded-sm bg-red-500 p-2 text-white transition-colors hover:bg-red-600'
+    <div className='absolute top-2 flex w-full items-center justify-between gap-2 px-3'>
+      <Badge
+        className={cn(
+          'h-fit font-semibold select-none',
+          statusDetails[service.status as 'pending' | 'approved' | 'rejected'].color
+        )}
       >
-        <Trash2 size={16} />
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure you want to delete this service?</AlertDialogTitle>
-          <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => setOpen(false)} className='cursor-pointer' disabled={deleting}>
-            Cancel
-          </AlertDialogCancel>
-          <AlertDialogAction onClick={handleConfirmDelete} className='cursor-pointer bg-red-500' disabled={deleting}>
-            {deleting ? (
-              <span className='flex items-center gap-2'>
-                <Loader className='animate-spin' /> Deleting..
-              </span>
-            ) : (
-              'Delete'
-            )}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+        {service.status.charAt(0).toUpperCase() + service.status.slice(1)}{' '}
+        {service.status === 'pending' && (
+          <Tooltip>
+            <TooltipTrigger className='cursor-help'>
+              <Info size={16} />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                This service is currently being reviewed by our team. We will notify you if it gets approved or
+                rejected.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        )}
+        {service.status === 'rejected' && (
+          <Tooltip>
+            <TooltipTrigger className='cursor-help'>
+              <Info size={16} />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{service.rejection_reason}</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
+      </Badge>
+      <AlertDialog open={open}>
+        <AlertDialogTrigger
+          onClick={() => setOpen(true)}
+          className='cursor-pointer rounded-sm bg-red-500 p-2 text-white transition-colors hover:bg-red-600'
+        >
+          <Trash2 size={16} />
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to delete this service?</AlertDialogTitle>
+            <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setOpen(false)} className='cursor-pointer' disabled={deleting}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className='cursor-pointer bg-red-500' disabled={deleting}>
+              {deleting ? (
+                <span className='flex items-center gap-2'>
+                  <Loader className='animate-spin' /> Deleting..
+                </span>
+              ) : (
+                'Delete'
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
   );
 }

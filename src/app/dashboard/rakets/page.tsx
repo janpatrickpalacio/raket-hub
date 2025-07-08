@@ -14,7 +14,9 @@ export default async function DashboardRaketsPage() {
   const { data: services } = await supabase
     .from('services')
     .select('*, raketero:users(*)')
-    .eq('raketero_id', user?.id || '');
+    .eq('raketero_id', user?.id || '')
+    .order('created_at', { ascending: false });
+
   const hasServices = (services?.length ?? 0) > 0;
 
   return (
@@ -28,7 +30,7 @@ export default async function DashboardRaketsPage() {
           <div className='grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
             <Link
               href={DashboardRoutes.RAKETS_NEW}
-              className='flex aspect-video w-full flex-col items-center justify-center rounded-lg border-2 border-dashed bg-white p-8 text-sm text-neutral-500 transition-colors hover:bg-neutral-50'
+              className='flex aspect-video h-full w-full flex-col items-center justify-center rounded-lg border-2 border-dashed bg-white p-8 text-sm text-neutral-500 transition-colors hover:bg-neutral-100'
             >
               <FolderPlus size={40} className='mb-4 text-neutral-400' />
               Create New Raket

@@ -103,7 +103,7 @@ export default function DashboardRaketsNewPage() {
       cover_image_url: coverImageFileUrl?.fullPath,
       gallery_image_urls: galleryImageFileUrls,
       delivery_days: deliveryDays,
-      is_active: true,
+      status: 'pending',
     });
 
     if (error) {
@@ -112,7 +112,10 @@ export default function DashboardRaketsNewPage() {
       return;
     }
 
-    toast.success('Raket created successfully');
+    toast.success(
+      'Raket successfully submitted! Our team will review your submission and get back to you within 24 hours.',
+      { icon: '🎉' }
+    );
     router.replace(DashboardRoutes.RAKETS);
   };
 

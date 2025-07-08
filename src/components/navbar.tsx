@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { LayoutDashboard, Loader, LogOut, Menu, Settings } from 'lucide-react';
+import { LayoutDashboard, Loader, LogOut, Menu, Settings, ShieldUser } from 'lucide-react';
 import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from './ui/drawer';
 import RaketHubIcon from './raket-hub-icon';
-import { AuthRoutes, DashboardRoutes, PublicRoutes } from '@/routes';
+import { AdminRoutes, AuthRoutes, DashboardRoutes, PublicRoutes } from '@/routes';
 import { Button } from './ui/button';
 import { createClient } from '@/lib/supabase/client';
 import { Database } from '@/lib/supabase/types';
@@ -118,6 +118,15 @@ function NavbarDesktop({ user, loading, onLogoutClick }: NavbarProps) {
                     <LayoutDashboard size={16} className='text-black/60' />
                     Dashboard
                   </Link>
+                  {user.role === 'admin' && (
+                    <Link
+                      href={AdminRoutes.APPROVAL}
+                      className='flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-black/80 transition-colors hover:bg-neutral-100'
+                    >
+                      <ShieldUser size={16} className='text-black/60' />
+                      Admin Dashboard
+                    </Link>
+                  )}
                   <Link
                     href={DashboardRoutes.SETTINGS}
                     className='flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-black/80 transition-colors hover:bg-neutral-100'
