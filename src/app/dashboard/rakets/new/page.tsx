@@ -43,7 +43,7 @@ export default function DashboardRaketsNewPage() {
     e.preventDefault();
     setSubmitting(true);
     const supabase = createClient();
-    const uuid = generateUUID();
+    const newRaketId = generateUUID();
 
     const {
       data: { user },
@@ -60,13 +60,38 @@ export default function DashboardRaketsNewPage() {
 
     const titleToSlug = slugify(title, { lower: true });
     const { data: slugExists } = await supabase.from('services').select('slug').eq('slug', titleToSlug).single();
-    const slug = slugExists ? `${titleToSlug}-${uuid}` : titleToSlug;
+    const slug = slugExists ? `${titleToSlug}-${newRaketId}` : titleToSlug;
+
+    // Insert a new service first before uploading images
+    const { data: newService, error } = await supabase
+      .from('services')
+      .insert({
+        id: newRaketId,
+        slug,
+        raketero_id: user.id,
+        title: title,
+        description,
+        subcategory_id: subcategoryId,
+        pricing_type: pricingType,
+        cover_image_url: 'placeholder',
+        price: Number(price),
+        delivery_days: deliveryDays,
+        status: 'pending',
+      })
+      .select('id')
+      .single();
+
+    if (error) {
+      toast.error(`Error: ${error.message}`);
+      setSubmitting(false);
+      return;
+    }
 
     // upload images first in bucket
     const storage = supabase.storage.from('services');
 
     const { data: coverImageFileUrl, error: coverImageFileError } = await storage.upload(
-      `${user?.user_metadata.username}/${slug}/${generateUUID()}`,
+      `${newService.id}/${generateUUID()}`,
       coverImageFile.file
     );
 
@@ -78,10 +103,7 @@ export default function DashboardRaketsNewPage() {
 
     const galleryImageFileUrls = await Promise.all(
       galleryImageFiles.map(async imageFile => {
-        const { data, error } = await storage.upload(
-          `${user?.user_metadata.username}/${slug}/${generateUUID()}`,
-          imageFile.file
-        );
+        const { data, error } = await storage.upload(`${newService.id}/${generateUUID()}`, imageFile.file);
 
         if (error) {
           return '';
@@ -91,23 +113,16 @@ export default function DashboardRaketsNewPage() {
       })
     );
 
-    const { error } = await supabase.from('services').insert({
-      id: uuid,
-      slug,
-      raketero_id: user.id,
-      title: title,
-      description,
-      subcategory_id: subcategoryId,
-      pricing_type: pricingType,
-      price: Number(price),
-      cover_image_url: coverImageFileUrl?.fullPath,
-      gallery_image_urls: galleryImageFileUrls,
-      delivery_days: deliveryDays,
-      status: 'pending',
-    });
+    const { error: serviceUpdateError } = await supabase
+      .from('services')
+      .update({
+        cover_image_url: coverImageFileUrl?.fullPath,
+        gallery_image_urls: galleryImageFileUrls,
+      })
+      .eq('id', newService.id);
 
-    if (error) {
-      toast.error(`Error: ${error.message}`);
+    if (serviceUpdateError) {
+      toast.error(`Error: ${serviceUpdateError.message}`);
       setSubmitting(false);
       return;
     }

@@ -20,9 +20,13 @@ export default async function ServiceViewPage({ params }: Props) {
     .eq('slug', slug)
     .single();
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   if (serviceError) {
     throw new Error(serviceError?.message);
   }
 
-  return <ServiceViewPageContent service={service} />;
+  return <ServiceViewPageContent user={user} service={service} />;
 }

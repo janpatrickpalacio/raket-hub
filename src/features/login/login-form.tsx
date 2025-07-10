@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { createClient } from '@/lib/supabase/client';
 import { Loader } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import { DashboardRoutes } from '@/routes';
 
@@ -17,6 +17,7 @@ export default function LoginForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const supabase = createClient();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -34,7 +35,7 @@ export default function LoginForm() {
       return;
     }
 
-    router.replace(DashboardRoutes.DASHBOARD);
+    router.replace(searchParams.get('redirect') || DashboardRoutes.DASHBOARD);
   };
 
   return (

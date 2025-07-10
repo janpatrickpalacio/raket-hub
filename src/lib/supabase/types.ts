@@ -150,10 +150,12 @@ export type Database = {
       }
       orders: {
         Row: {
+          attachment_urls: string[] | null
           completed_at: string | null
           created_at: string
           id: string
           kliyente_id: string
+          payment_gateway_invoice_id: string
           raketero_id: string
           requirements: string | null
           service_id: string
@@ -161,10 +163,12 @@ export type Database = {
           total_price: number
         }
         Insert: {
+          attachment_urls?: string[] | null
           completed_at?: string | null
           created_at?: string
           id?: string
           kliyente_id: string
+          payment_gateway_invoice_id: string
           raketero_id: string
           requirements?: string | null
           service_id: string
@@ -172,10 +176,12 @@ export type Database = {
           total_price: number
         }
         Update: {
+          attachment_urls?: string[] | null
           completed_at?: string | null
           created_at?: string
           id?: string
           kliyente_id?: string
+          payment_gateway_invoice_id?: string
           raketero_id?: string
           requirements?: string | null
           service_id?: string

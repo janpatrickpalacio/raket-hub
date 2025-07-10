@@ -13,22 +13,69 @@ import { Separator } from '@/components/ui/separator';
 import UserAvatar from '@/components/user-avatar';
 import useServiceContext from '@/features/services/contexts/service-context';
 import { ServiceWithRaketero } from '@/lib/supabase/custom-types';
-import { PublicRoutes } from '@/routes';
+import { AuthRoutes, PublicRoutes } from '@/routes';
+import { User } from '@supabase/supabase-js';
 import clsx from 'clsx';
 import { Clock, Edit, Star } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useTopLoader } from 'nextjs-toploader';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface Props {
+  user: User | null;
   service: ServiceWithRaketero;
 }
 
-export default function ServiceViewPageContent({ service }: Props) {
+export default function ServiceViewPageContent({ user, service }: Props) {
   const [currentImageUrl, setCurrentImageUrl] = useState<string>(service.cover_image_url || '/');
   const { categories, subcategories } = useServiceContext();
+  const router = useRouter();
+  const loader = useTopLoader();
   const subcategory = subcategories.find(subcategory => subcategory.id === service.subcategory_id);
   const category = categories.find(category => category.id === subcategory?.category_id);
   const allServiceImages = [service.cover_image_url, ...(service.gallery_image_urls ?? [])];
+
+  const handleOrderNow = async (): Promise<void> => {
+    try {
+      loader.start();
+
+      if (!user) {
+        router.push(`${AuthRoutes.LOGIN}?redirect=${encodeURIComponent(`${PublicRoutes.SERVICES}/${service.slug}`)}`);
+        return;
+      }
+
+      const response = await fetch('/api/create-invoice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          service_id: service.id,
+          customer_email: user?.email,
+          amount: service.price,
+          description: `Payment for ${service.title}`,
+        }),
+      });
+
+      const data = await response.json();
+      loader.done();
+
+      if (!response.ok) {
+        toast.error(data.message);
+        return;
+      }
+
+      // If successful, redirect the user to the Xendit payment page
+      if (data.invoiceUrl) {
+        window.location.href = data.invoiceUrl;
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'An error occurred';
+      alert('Error creating payment: ' + message);
+    }
+  };
 
   return (
     <main className='relative container mx-auto my-12 min-h-[90dvh] max-w-7xl px-4'>
@@ -86,7 +133,7 @@ export default function ServiceViewPageContent({ service }: Props) {
             <CardHeader>
               <CardTitle className='text-2xl font-bold'>About This Raket</CardTitle>
               <CardContent className='mt-4 p-0'>
-                <p>{service.description}</p>
+                <p className='whitespace-pre-line'>{service.description}</p>
               </CardContent>
             </CardHeader>
           </Card>
@@ -156,11 +203,16 @@ export default function ServiceViewPageContent({ service }: Props) {
                   </p>
                 )}
               </div>
-              <div className='mt-4 flex flex-col gap-2'>
-                <Button className='w-full cursor-pointer bg-blue-600 py-6 text-base font-bold hover:bg-blue-700'>
-                  Order Now (&#8369;{service.price.toLocaleString()})
-                </Button>
-              </div>
+              {user?.id !== service.raketero.id && (
+                <div className='mt-4 flex flex-col gap-2'>
+                  <Button
+                    onClick={handleOrderNow}
+                    className='w-full cursor-pointer bg-blue-600 py-6 text-base font-bold hover:bg-blue-700'
+                  >
+                    Order Now (&#8369;{service.price.toLocaleString()})
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
         </section>

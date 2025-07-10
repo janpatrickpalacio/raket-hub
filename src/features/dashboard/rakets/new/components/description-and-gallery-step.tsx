@@ -142,7 +142,6 @@ export function DescriptionAndGalleryStep() {
               </div>
             ) : (
               <div {...getCoverImageRootProps()}>
-                <input {...getCoverImageInputProps()} onChange={handleCoverImageChange} ref={coverImageInputRef} />
                 <div className='flex w-full flex-col items-center justify-center rounded-lg border-2 border-dashed bg-white p-8'>
                   <ImagePlus size={40} className='mb-4 text-neutral-400' />
                   <p className='text-sm'>
@@ -196,11 +195,6 @@ export function DescriptionAndGalleryStep() {
                     className='flex aspect-video w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-white hover:bg-neutral-50'
                     onClick={() => galleryImageInputRef?.current?.click()}
                   >
-                    <input
-                      {...getGalleryImagesInputProps()}
-                      onChange={handleGalleryImagesChange}
-                      ref={galleryImageInputRef}
-                    />
                     <ImagePlus size={40} className='text-neutral-400' />
                     {isGalleryImagesDragActive && <p className='text-sm text-black/50'>Drop the files here..</p>}
                   </button>
@@ -208,11 +202,6 @@ export function DescriptionAndGalleryStep() {
               </div>
             ) : (
               <div {...getGalleryImagesRootProps()}>
-                <input
-                  {...getGalleryImagesInputProps()}
-                  onChange={handleGalleryImagesChange}
-                  ref={galleryImageInputRef}
-                />
                 <div className='flex w-full flex-col items-center justify-center rounded-lg border-2 border-dashed bg-white p-8'>
                   <ImagePlus size={40} className='mb-4 text-neutral-400' />
                   <p className='text-sm'>
@@ -235,7 +224,7 @@ export function DescriptionAndGalleryStep() {
                 </div>
               </div>
             )}
-            <input {...getGalleryImagesInputProps()} ref={galleryImageInputRef} onChange={handleGalleryImagesChange} />
+            <input {...getGalleryImagesInputProps()} onChange={handleGalleryImagesChange} ref={galleryImageInputRef} />
           </div>
         </div>
       </CardHeader>
