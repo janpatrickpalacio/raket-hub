@@ -19,21 +19,50 @@ export type Database = {
           created_at: string
           id: number
           name: string | null
-          slug: string | null
+          slug: string
         }
         Insert: {
           created_at?: string
           id?: number
           name?: string | null
-          slug?: string | null
+          slug: string
         }
         Update: {
           created_at?: string
           id?: number
           name?: string | null
-          slug?: string | null
+          slug?: string
         }
         Relationships: []
+      }
+      cities: {
+        Row: {
+          id: number
+          name: string
+          province_id: number
+          slug: string
+        }
+        Insert: {
+          id?: number
+          name: string
+          province_id: number
+          slug: string
+        }
+        Update: {
+          id?: number
+          name?: string
+          province_id?: number
+          slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cities_province_id_fkey"
+            columns: ["province_id"]
+            isOneToOne: false
+            referencedRelation: "provinces"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       conversation_participants: {
         Row: {
@@ -177,6 +206,24 @@ export type Database = {
           },
         ]
       }
+      provinces: {
+        Row: {
+          id: number
+          name: string
+          slug: string
+        }
+        Insert: {
+          id?: number
+          name: string
+          slug: string
+        }
+        Update: {
+          id?: number
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           comment: string | null
@@ -261,7 +308,7 @@ export type Database = {
           pricing_type: Database["public"]["Enums"]["pricing_type_enum"]
           raketero_id: string
           rejection_reason?: string | null
-          slug: string
+          slug?: string
           status?: Database["public"]["Enums"]["service_status_enum"]
           subcategory_id: number
           title: string
@@ -307,21 +354,21 @@ export type Database = {
           created_at: string
           id: number
           name: string
-          slug: string | null
+          slug: string
         }
         Insert: {
           category_id: number
           created_at?: string
           id?: number
           name: string
-          slug?: string | null
+          slug: string
         }
         Update: {
           category_id?: number
           created_at?: string
           id?: number
           name?: string
-          slug?: string | null
+          slug?: string
         }
         Relationships: [
           {
@@ -338,13 +385,14 @@ export type Database = {
           avatar_url: string | null
           average_rating: number
           bio: string | null
+          city_id: number | null
           created_at: string
           email: string
           first_name: string
           id: string
           is_raketero: boolean | null
           last_name: string
-          location: string | null
+          level: Database["public"]["Enums"]["user_level_enum"]
           role: Database["public"]["Enums"]["user_role"]
           total_reviews: number | null
           username: string
@@ -353,13 +401,14 @@ export type Database = {
           avatar_url?: string | null
           average_rating?: number
           bio?: string | null
+          city_id?: number | null
           created_at?: string
           email: string
           first_name: string
           id?: string
           is_raketero?: boolean | null
           last_name: string
-          location?: string | null
+          level?: Database["public"]["Enums"]["user_level_enum"]
           role?: Database["public"]["Enums"]["user_role"]
           total_reviews?: number | null
           username: string
@@ -368,25 +417,41 @@ export type Database = {
           avatar_url?: string | null
           average_rating?: number
           bio?: string | null
+          city_id?: number | null
           created_at?: string
           email?: string
           first_name?: string
           id?: string
           is_raketero?: boolean | null
           last_name?: string
-          location?: string | null
+          level?: Database["public"]["Enums"]["user_level_enum"]
           role?: Database["public"]["Enums"]["user_role"]
           total_reviews?: number | null
           username?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "users_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      reindex_user_services: {
+        Args: { p_user_id: string }
+        Returns: undefined
+      }
+      update_raketero_levels: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       order_status_enum:
@@ -398,6 +463,7 @@ export type Database = {
         | "Disputed"
       pricing_type_enum: "Fixed" | "Hourly" | "Per Quote"
       service_status_enum: "pending" | "approved" | "rejected" | "paused"
+      user_level_enum: "New" | "Rising" | "Top-Rated"
       user_role: "user" | "admin"
     }
     CompositeTypes: {
@@ -536,6 +602,7 @@ export const Constants = {
       ],
       pricing_type_enum: ["Fixed", "Hourly", "Per Quote"],
       service_status_enum: ["pending", "approved", "rejected", "paused"],
+      user_level_enum: ["New", "Rising", "Top-Rated"],
       user_role: ["user", "admin"],
     },
   },

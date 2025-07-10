@@ -17,3 +17,11 @@ export function createArray(length: number) {
 export function generateUUID(): string {
   return uuidv4();
 }
+
+export function setParam(params: URLSearchParams, key: string, value?: string) {
+  if (value) {
+    params.set(key, value);
+  } else {
+    params.delete(key);
+  }
+}
