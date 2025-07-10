@@ -1,16 +1,13 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import FilterSectionDesktop from '@/features/services/components/filter-section-desktop';
-import FilterSectionMobile from '@/features/services/components/filter-section-mobile';
 import ServicesHeroSection from '@/features/services/components/services-hero-section';
 import ServicesResult from '@/features/services/components/services-result';
+import ServicesSearchAndFilter from '@/features/services/components/services-search-and-filter';
 import { createClient } from '@/lib/supabase/server';
-import { Filter } from 'lucide-react';
 
 interface Props {
   searchParams: Promise<{
     category?: string;
     subcategory?: string;
+    q?: string;
   }>;
 }
 
@@ -18,7 +15,7 @@ const MAX_DISPLAY_PER_PAGE = 12;
 
 export default async function ServicesPage({ searchParams }: Props) {
   const supabase = await createClient();
-  const { category: categoryParam, subcategory: subcategoryParam } = await searchParams;
+  const { category: categoryParam, subcategory: subcategoryParam, q: queryParam } = await searchParams;
 
   let servicesQuery = supabase
     .from('services')
@@ -31,6 +28,8 @@ export default async function ServicesPage({ searchParams }: Props) {
     .eq('status', 'approved')
     .range(0, MAX_DISPLAY_PER_PAGE);
 
+  let servicesCountQuery = supabase.from('services').select('*', { count: 'exact' }).eq('status', 'approved');
+
   if (subcategoryParam) {
     const { data: subcategory } = await supabase
       .from('subcategories')
@@ -39,6 +38,7 @@ export default async function ServicesPage({ searchParams }: Props) {
       .single();
 
     servicesQuery = servicesQuery.eq('subcategory_id', subcategory?.id ?? -1);
+    servicesCountQuery = servicesCountQuery.eq('subcategory_id', subcategory?.id ?? -1);
   } else if (categoryParam) {
     const { data: category } = await supabase
       .from('categories')
@@ -52,13 +52,19 @@ export default async function ServicesPage({ searchParams }: Props) {
       .eq('category_id', category?.id ?? -1);
 
     servicesQuery = servicesQuery.in('subcategory_id', subcategories?.map(subcategory => subcategory.id) || []);
+    servicesCountQuery = servicesCountQuery.in(
+      'subcategory_id',
+      subcategories?.map(subcategory => subcategory.id) || []
+    );
+  }
+
+  if (queryParam) {
+    servicesQuery = servicesQuery.textSearch('fts', queryParam, { type: 'websearch' });
+    servicesCountQuery = servicesCountQuery.textSearch('fts', queryParam, { type: 'websearch' });
   }
 
   const { data: services, error: servicesError } = await servicesQuery;
-
-  const { count: servicesCount, error: servicesCountError } = await supabase
-    .from('services')
-    .select('*', { count: 'exact' });
+  const { count: servicesCount, error: servicesCountError } = await servicesCountQuery;
 
   if (servicesError || servicesCountError) {
     throw new Error(servicesError?.message || servicesCountError?.message);
@@ -69,27 +75,7 @@ export default async function ServicesPage({ searchParams }: Props) {
       <main className='relative container mx-auto grid min-h-[80dvh] gap-8 py-10'>
         <section className='flex w-full flex-col gap-2'>
           <ServicesHeroSection />
-          <div className='mt-4 hidden items-center gap-2 lg:flex'>
-            <Input
-              placeholder='Search for a service (e.g. Logo Design)'
-              className='rounded-full bg-white py-5 text-sm'
-            />
-            <Dialog>
-              <DialogTrigger className='flex h-full cursor-pointer items-center gap-2 rounded-full border bg-white px-3 text-sm transition-colors hover:bg-neutral-100'>
-                <Filter size={16} /> Filters
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle className='text-2xl'>Filters</DialogTitle>
-                </DialogHeader>
-                <FilterSectionDesktop />
-              </DialogContent>
-            </Dialog>
-          </div>
-          <div className='flex items-center gap-2 lg:hidden'>
-            <Input placeholder='Search for a service (e.g. Logo Design)' className='bg-white text-sm' />
-            <FilterSectionMobile />
-          </div>
+          <ServicesSearchAndFilter />
           <p className='mt-4 -mb-3 text-neutral-500'>
             Showing {services?.length || 0} of {servicesCount || 0} results
           </p>

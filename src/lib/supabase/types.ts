@@ -235,6 +235,7 @@ export type Database = {
           created_at: string
           delivery_days: number
           description: string
+          fts: unknown | null
           gallery_image_urls: string[] | null
           id: string
           number_of_revisions: number | null
@@ -252,6 +253,7 @@ export type Database = {
           created_at?: string
           delivery_days?: number
           description: string
+          fts?: unknown | null
           gallery_image_urls?: string[] | null
           id?: string
           number_of_revisions?: number | null
@@ -269,6 +271,7 @@ export type Database = {
           created_at?: string
           delivery_days?: number
           description?: string
+          fts?: unknown | null
           gallery_image_urls?: string[] | null
           id?: string
           number_of_revisions?: number | null

@@ -1,11 +1,11 @@
 import HeroSection from '@/components/hero-section';
-import { Input } from '@/components/ui/input';
 import { ExploreCard } from '@/features/home/components/explore-card';
 import RaketeroCard from '@/features/home/components/raketero-card';
 import StepCard from '@/components/step-card';
 import { Monitor } from 'lucide-react';
 import Link from 'next/link';
 import { PublicRoutes } from '@/routes';
+import LandingSearchInput from '@/features/home/components/landing-search-input';
 
 export default async function Home() {
   return (
@@ -14,18 +14,7 @@ export default async function Home() {
         title={`The best Filipino freelancers\nall in one place.`}
         description='Find trusted Filipino talent for any project, big or small'
       >
-        <div className='mt-8 flex w-full flex-col items-center justify-center gap-4 sm:flex-row'>
-          <Input
-            className='w-full rounded-full bg-white px-4 py-6 text-sm text-black sm:max-w-[480px]'
-            placeholder='What service do you need? (e.g. Logo Design)'
-          />
-          <Link
-            href={`${PublicRoutes.SERVICES}?q=`}
-            className='w-full cursor-pointer rounded-full bg-yellow-300 px-8 py-3 font-semibold text-black transition-colors hover:bg-yellow-400 sm:w-auto'
-          >
-            Search
-          </Link>
-        </div>
+        <LandingSearchInput />
       </HeroSection>
       <div className='[&>section]:odd:bg-white [&>section]:even:bg-neutral-50'>
         <section>
