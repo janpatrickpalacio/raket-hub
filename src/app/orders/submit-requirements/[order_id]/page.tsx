@@ -8,12 +8,13 @@ import { Files } from 'lucide-react';
 import { notFound, redirect } from 'next/navigation';
 
 interface Props {
-  params: { order_id: string };
+  params: Promise<{ order_id: string }>;
   searchParams: { service_id: string; email: string };
 }
 
 export default async function OrderSuccessPage({ params, searchParams }: Props) {
   const supabase = await createClient();
+  const { order_id } = await params;
 
   const {
     data: { user },
@@ -30,7 +31,7 @@ export default async function OrderSuccessPage({ params, searchParams }: Props) 
   const { data: order } = await supabase
     .from('orders')
     .select('*, service:services(*, raketero:users(first_name, last_name, avatar_url))')
-    .eq('id', params.order_id)
+    .eq('id', order_id)
     .single();
 
   if (!order) {
