@@ -9,12 +9,13 @@ import { notFound, redirect } from 'next/navigation';
 
 interface Props {
   params: Promise<{ order_id: string }>;
-  searchParams: { service_id: string; email: string };
+  searchParams: Promise<{ email: string }>;
 }
 
 export default async function OrderSuccessPage({ params, searchParams }: Props) {
   const supabase = await createClient();
   const { order_id } = await params;
+  const { email } = await searchParams;
 
   const {
     data: { user },
@@ -24,7 +25,7 @@ export default async function OrderSuccessPage({ params, searchParams }: Props) 
     redirect(AuthRoutes.LOGIN);
   }
 
-  if (user.email !== searchParams.email) {
+  if (user.email !== email) {
     notFound();
   }
 
@@ -36,12 +37,6 @@ export default async function OrderSuccessPage({ params, searchParams }: Props) 
 
   if (!order) {
     notFound();
-  }
-
-  const { error } = await supabase.from('orders').update({ status: 'In Progress' }).eq('id', order.id);
-
-  if (error) {
-    throw new Error(error.message);
   }
 
   const service = order.service;
