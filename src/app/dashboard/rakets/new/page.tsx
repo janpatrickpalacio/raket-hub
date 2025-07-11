@@ -22,6 +22,8 @@ import { RaketOverviewStep } from '@/features/dashboard/rakets/new/components/ra
 import { toast } from 'sonner';
 import { Loader } from 'lucide-react';
 import slugify from 'slugify';
+import RaketHubIcon from '@/components/raket-hub-icon';
+import Link from 'next/link';
 
 export default function DashboardRaketsNewPage() {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -148,49 +150,59 @@ export default function DashboardRaketsNewPage() {
   }, []);
 
   return (
-    <>
-      <AuthRedirect />
-      <div className='flex flex-col gap-4'>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href={DashboardRoutes.DASHBOARD}>Dashboard</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href={DashboardRoutes.RAKETS}>Rakets</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Create New Raket</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-        <DashboardPageWrapper
-          title='Create Your Raket'
-          description='Fill out the details below to get your service listed on the marketplace.'
-        >
-          <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
-            <RaketOverviewStep />
-            <PricingStep />
-            <DescriptionAndGalleryStep />
-            <div className='flex w-full items-center justify-end gap-4'>
-              <Button type='button' variant='outline' className='cursor-pointer' disabled>
-                Save as Draft
-              </Button>
-              <Button className='cursor-pointer bg-blue-600 hover:bg-blue-700' disabled={submitting}>
-                {submitting ? (
-                  <span className='flex items-center gap-2'>
-                    <Loader className='animate-spin' /> Publishing...
-                  </span>
-                ) : (
-                  'Publish Raket'
-                )}
-              </Button>
-            </div>
-          </form>
-        </DashboardPageWrapper>
-      </div>
-    </>
+    <div className='flex min-h-[100dvh] flex-col gap-8'>
+      <nav className='bg-white p-4'>
+        <div className='container mx-auto flex items-center justify-between'>
+          <RaketHubIcon />
+          <Link href={DashboardRoutes.DASHBOARD} className='text-sm text-neutral-500 hover:text-neutral-600'>
+            Back to Dashboard
+          </Link>
+        </div>
+      </nav>
+      <main className='mx-auto w-full max-w-5xl'>
+        <AuthRedirect />
+        <div className='flex flex-col gap-4'>
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href={DashboardRoutes.DASHBOARD}>Dashboard</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href={DashboardRoutes.RAKETS}>Rakets</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Create New Raket</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          <DashboardPageWrapper
+            title='Create Your Raket'
+            description='Fill out the details below to get your service listed on the marketplace.'
+          >
+            <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
+              <RaketOverviewStep />
+              <PricingStep />
+              <DescriptionAndGalleryStep />
+              <div className='flex w-full items-center justify-end gap-4'>
+                <Button type='button' variant='outline' className='cursor-pointer' disabled>
+                  Save as Draft
+                </Button>
+                <Button className='cursor-pointer bg-blue-600 hover:bg-blue-700' disabled={submitting}>
+                  {submitting ? (
+                    <span className='flex items-center gap-2'>
+                      <Loader className='animate-spin' /> Publishing...
+                    </span>
+                  ) : (
+                    'Publish Raket'
+                  )}
+                </Button>
+              </div>
+            </form>
+          </DashboardPageWrapper>
+        </div>
+      </main>
+    </div>
   );
 }

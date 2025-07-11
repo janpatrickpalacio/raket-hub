@@ -7,6 +7,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import {
@@ -50,6 +51,12 @@ const menuItems = [
     label: 'My Rakets',
     href: '/dashboard/rakets',
     icon: BriefcaseBusiness,
+    subMenuItems: [
+      {
+        label: 'Create New Raket',
+        href: DashboardRoutes.RAKETS_NEW,
+      },
+    ],
   },
   {
     label: 'Messages',
@@ -82,10 +89,9 @@ export default function DashboardSidebar({ user }: Props) {
       <Separator className='my-4' />
       <SidebarContent>
         <SidebarMenu className='px-4'>
-          {menuItems.map(item => {
-            const isActive = pathname === item.href;
-            return <CustomSidebarItem key={item.href} item={item} isActive={isActive} />;
-          })}
+          {menuItems.map(item => (
+            <CustomSidebarItem key={item.href} item={item} />
+          ))}
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
@@ -136,15 +142,21 @@ export default function DashboardSidebar({ user }: Props) {
 
 function CustomSidebarItem({
   item,
-  isActive,
 }: {
   item: {
     label: string;
     href: string;
     icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
+    subMenuItems?: {
+      label: string;
+      href: string;
+    }[];
   };
-  isActive: boolean;
 }) {
+  const pathname = usePathname();
+  const isActive = pathname === item.href;
+  const showSubMenuItems = pathname.includes(item.href);
+
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -159,6 +171,25 @@ function CustomSidebarItem({
           {item.label}
         </Link>
       </SidebarMenuButton>
+      {showSubMenuItems && item.subMenuItems && (
+        <SidebarMenu className='mt-1 px-4'>
+          {item.subMenuItems.map(subItem => (
+            <SidebarMenuSubItem key={subItem.href}>
+              <SidebarMenuButton
+                asChild
+                className={cn(
+                  'px-4 py-4.5 text-black/70 transition-colors duration-100 hover:bg-transparent hover:text-blue-600',
+                  pathname === subItem.href && 'text-blue-500'
+                )}
+              >
+                <Link href={subItem.href} className='justify-start rounded-md text-sm'>
+                  {subItem.label}
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuSubItem>
+          ))}
+        </SidebarMenu>
+      )}
     </SidebarMenuItem>
   );
 }
