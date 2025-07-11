@@ -15,6 +15,7 @@ export const DashboardRoutes = {
   ORDERS: '/dashboard/orders',
   RAKETS: '/dashboard/rakets',
   RAKETS_NEW: '/dashboard/rakets/new',
+  RAKETS_EDIT: '/dashboard/rakets/edit',
   MESSAGES: '/dashboard/messages',
   WALLET: '/dashboard/wallet',
   SETTINGS: '/dashboard/settings',

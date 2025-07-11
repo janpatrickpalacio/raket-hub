@@ -10,3 +10,8 @@ type RaketeroInfo = Pick<
 export interface ServiceWithRaketero extends Services {
   raketero: RaketeroInfo;
 }
+
+export interface RaketsTableRow extends Services {
+  raketero: RaketeroInfo;
+  orders: { count: number }[];
+}

@@ -3,19 +3,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { useRaketFormStore } from '@/features/dashboard/rakets/stores/useRaketFormStore';
-import { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 export function PricingStep() {
-  const [selectedPricingType, setSelectedPricingType] = useState<string>('Fixed');
-  const { updatePricingType, updateDeliveryDays, updatePrice } = useRaketFormStore();
-
-  const handleSelectPricingType = (value: 'Fixed' | 'Hourly' | 'Per Quote'): void => {
-    if (value === selectedPricingType) return;
-
-    setSelectedPricingType(value);
-    updatePricingType(value);
-  };
+  const { register, control } = useFormContext();
 
   return (
     <Card>
@@ -27,42 +18,42 @@ export function PricingStep() {
             <Label htmlFor='pricing-type'>
               Pricing Type <span className='-ml-1 text-red-600'>*</span>
             </Label>
-            <Select value={selectedPricingType} onValueChange={handleSelectPricingType} required>
-              <SelectTrigger id='pricing-type' className='w-full bg-white'>
-                <SelectValue placeholder='Select a category' />
-              </SelectTrigger>
-              <SelectContent className='w-full'>
-                <SelectItem value='Fixed'>Fixed Price</SelectItem>
-                {/* <SelectItem value='Hourly' disabled>
-                  Per Hour (Coming Soon!)
-                </SelectItem>
-                <SelectItem value='Per Quote' disabled>
-                  Per Quote (Coming Soon!)
-                </SelectItem> */}
-              </SelectContent>
-            </Select>
+            <Controller
+              name='pricing_type'
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange} required>
+                  <SelectTrigger id='pricing-type' className='w-full bg-white'>
+                    <SelectValue placeholder='Select pricing type' />
+                  </SelectTrigger>
+                  <SelectContent className='w-full'>
+                    <SelectItem value='Fixed'>Fixed Price</SelectItem>
+                    {/* <SelectItem value='Hourly' disabled>
+                      Per Hour (Coming Soon!)
+                    </SelectItem>
+                    <SelectItem value='Per Quote' disabled>
+                      Per Quote (Coming Soon!)
+                    </SelectItem> */}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </div>
           <div className='flex flex-col gap-1'>
             <Label htmlFor='price'>
               Price (PHP) <span className='-ml-1 text-red-600'>*</span>
             </Label>
-            <Input
-              id='price'
-              type='number'
-              placeholder='0.00'
-              onChange={e => updatePrice(Number(e.target.value))}
-              required
-            />
+            <Input {...register('price', { required: true })} id='price' type='number' placeholder='0.00' required />
           </div>
           <div className='flex flex-col gap-1'>
             <Label htmlFor='delivery-time'>
               Delivery Time (in days) <span className='-ml-1 text-red-600'>*</span>
             </Label>
             <Input
+              {...register('delivery_days', { required: true })}
               id='delivery-time'
               type='number'
               placeholder='7'
-              onChange={e => updateDeliveryDays(Number(e.target.value))}
               required
             />
           </div>

@@ -25,3 +25,12 @@ export function setParam(params: URLSearchParams, key: string, value?: string) {
     params.delete(key);
   }
 }
+
+export function formatNumber(number: number, options?: Intl.NumberFormatOptions): string {
+  const formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    ...options,
+  });
+  return formatter.format(number);
+}

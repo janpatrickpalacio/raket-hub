@@ -13,8 +13,9 @@ interface Props {
 
 export default function DashboardLayoutContent({ children, user }: Props) {
   const pathname = usePathname();
+  const routesWithoutLayout = [DashboardRoutes.RAKETS_NEW, DashboardRoutes.RAKETS_EDIT];
 
-  if (pathname === DashboardRoutes.RAKETS_NEW) {
+  if (routesWithoutLayout.some(route => pathname.includes(route))) {
     return children;
   }
 
