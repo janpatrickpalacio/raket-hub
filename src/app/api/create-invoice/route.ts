@@ -16,6 +16,7 @@ export async function POST(request: Request) {
   try {
     const { amount, description, service_id, customer_email } = await request.json();
 
+    // 1. Check if service exists, return not found if not
     const { data: service } = await supabase
       .from('services')
       .select('*, raketero:users(id, first_name, last_name, avatar_url)')
@@ -26,17 +27,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Service not found' }, { status: 404 });
     }
 
+    // 2. Check if order already exists, return conflict if so
     const { data: existingOrder } = await supabase.from('orders').select().eq('service_id', service_id).single();
 
     if (existingOrder) {
       return NextResponse.json({ error: 'Order already exists' }, { status: 409 });
     }
 
+    // 3. Create Xendit invoice
     const xenditSecretKey = process.env.XENDIT_SECRET_KEY;
-
     const newOrderId = generateUUID();
 
-    // Create invoice first
     const response = await fetch('https://api.xendit.co/v2/invoices', {
       method: 'POST',
       headers: {
@@ -62,7 +63,7 @@ export async function POST(request: Request) {
       throw new Error(data.message || 'Failed to create Xendit invoice.');
     }
 
-    // Then create new order
+    // 4. Insert a new order with the "Pending" status
     const { error } = await supabase
       .from('orders')
       .insert({
@@ -81,7 +82,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // 4. Return the invoice URL to the frontend.
+    // 5. Return the invoice URL to the frontend.
     return NextResponse.json({ invoiceUrl: data.invoice_url });
   } catch (error) {
     return NextResponse.json(

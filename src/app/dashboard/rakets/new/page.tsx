@@ -49,6 +49,7 @@ export default function DashboardRaketsNewPage() {
       data: { user },
     } = await supabase.auth.getUser();
 
+    // Redirect to login if user is not logged in
     if (!user) {
       router.push(AuthRoutes.LOGIN);
       return;
@@ -87,7 +88,7 @@ export default function DashboardRaketsNewPage() {
       return;
     }
 
-    // upload images first in bucket
+    // Upload images to services bucket with the path <service_id>/<uuid>
     const storage = supabase.storage.from('services');
 
     const { data: coverImageFileUrl, error: coverImageFileError } = await storage.upload(
@@ -113,6 +114,7 @@ export default function DashboardRaketsNewPage() {
       })
     );
 
+    // Then update the created service with the image urls
     const { error: serviceUpdateError } = await supabase
       .from('services')
       .update({

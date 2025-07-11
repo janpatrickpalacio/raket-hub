@@ -29,6 +29,7 @@ export default async function OrderSuccessPage({ params, searchParams }: Props) 
     notFound();
   }
 
+  // Check if order exists
   const { data: order } = await supabase
     .from('orders')
     .select('*, service:services(*, raketero:users(first_name, last_name, avatar_url))')

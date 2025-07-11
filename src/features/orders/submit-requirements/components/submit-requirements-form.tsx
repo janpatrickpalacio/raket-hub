@@ -101,7 +101,7 @@ export default function SubmitRequirementsForm({ orderId, service }: Props) {
       return;
     }
 
-    // upload images first in bucket
+    // Upload attachments to order-attachments bucket with the path <order_id>/<file_name>
     const storage = supabase.storage.from('order-attachments');
 
     const attachedFileUrls = await Promise.all(
@@ -116,6 +116,7 @@ export default function SubmitRequirementsForm({ orderId, service }: Props) {
       })
     );
 
+    // Update the existing order with the requirements, attachments and status to 'In Progress'
     const { error } = await supabase
       .from('orders')
       .update({
@@ -131,7 +132,8 @@ export default function SubmitRequirementsForm({ orderId, service }: Props) {
       return;
     }
 
-    toast.success('Requirements submitted successfully');
+    // Redirect to the order page
+    toast.success('Order requirements submitted successfully. Please wait for the Raketero to get back to you.');
     router.push(`${DashboardRoutes.ORDERS}/${orderId}`);
   };
 
