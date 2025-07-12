@@ -140,7 +140,7 @@ function ServiceRow({ service }: { service: ServiceWithRaketero }) {
                     width={500}
                     height={200}
                     quality={20}
-                    className='aspect-video max-w-1/3 border object-contain'
+                    className='aspect-video h-full max-w-1/3 border object-contain'
                   />
                 ))}
               </div>

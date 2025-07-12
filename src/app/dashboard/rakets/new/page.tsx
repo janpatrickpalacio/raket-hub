@@ -100,7 +100,11 @@ export default function DashboardRaketsNewPage() {
 
       const galleryImageFileUrls = await Promise.all(
         gallery_image_files.map(async (file: File) => {
-          const { data, error } = await storage.upload(`${newService.id}/${generateUUID()}`, file);
+          const { data, error } = await storage.upload(`${newService.id}/${generateUUID()}`, file, {
+            metadata: {
+              originalFileName: file.name,
+            },
+          });
 
           if (error) {
             return '';
@@ -173,9 +177,9 @@ export default function DashboardRaketsNewPage() {
                 <PricingStep />
                 <DescriptionAndGalleryStep />
                 <div className='flex w-full items-center justify-end gap-4'>
-                  <Button type='button' variant='outline' className='cursor-pointer' disabled>
+                  {/* <Button type='button' variant='outline' className='cursor-pointer' disabled>
                     Save as Draft
-                  </Button>
+                  </Button> */}
                   <Button className='cursor-pointer bg-blue-600 hover:bg-blue-700' disabled={submitting}>
                     {submitting ? (
                       <span className='flex items-center gap-2'>

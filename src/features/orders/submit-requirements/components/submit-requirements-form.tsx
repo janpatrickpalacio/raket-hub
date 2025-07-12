@@ -106,7 +106,11 @@ export default function SubmitRequirementsForm({ orderId, service }: Props) {
 
     const attachedFileUrls = await Promise.all(
       attachedFiles.map(async ({ file }) => {
-        const { data, error } = await storage.upload(`${orderId}/${generateUUID()}`, file);
+        const { data, error } = await storage.upload(`${orderId}/${generateUUID()}`, file, {
+          metadata: {
+            originalFileName: file.name,
+          },
+        });
 
         if (error) {
           return '';

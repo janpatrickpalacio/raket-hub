@@ -2,22 +2,30 @@ import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import { Database } from '@/lib/supabase/types';
 import { ImagePlus, X } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useFormContext } from 'react-hook-form';
 
+interface Props {
+  service?: Database['public']['Tables']['services']['Row'];
+}
+
 const MAX_IMAGE_FILES = 5;
 const MAX_IMAGE_SIZE_IN_BYTES = 5 * 1024 * 1024;
 
-export function DescriptionAndGalleryStep() {
-  const [coverImagePreview, setCoverImagePreview] = useState<string | null>(null);
+export function DescriptionAndGalleryStep({ service }: Props) {
+  const [coverImagePreview, setCoverImagePreview] = useState<string | null>(service?.cover_image_url || null);
+  const [currentGalleryImagesPreviews, setCurrentGalleryImagesPreviews] = useState<string[]>(
+    service?.gallery_image_urls || []
+  );
   const [galleryImagesPreviews, setGalleryImagesPreviews] = useState<string[]>([]);
   const [galleryImageFiles, setGalleryImageFiles] = useState<File[]>([]);
   const coverImageInputRef = useRef<HTMLInputElement>(null);
   const galleryImageInputRef = useRef<HTMLInputElement>(null);
-  const { register, control, setValue } = useFormContext();
+  const { register, control, setValue, getValues } = useFormContext();
 
   const onCoverImageDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -36,14 +44,13 @@ export function DescriptionAndGalleryStep() {
     (acceptedFiles: File[]) => {
       galleryImagesPreviews.forEach(url => URL.revokeObjectURL(url));
 
-      const fileList = galleryImageFiles.length
-        ? [...galleryImageFiles, ...acceptedFiles.filter(file => !galleryImageFiles.find(f => f.name === file.name))]
-        : acceptedFiles;
+      const fileList = galleryImageFiles.length ? [...galleryImageFiles, ...acceptedFiles] : acceptedFiles;
 
       const previews = fileList.map(file => URL.createObjectURL(file));
       setGalleryImageFiles(fileList);
       setGalleryImagesPreviews(previews);
       setValue('gallery_image_files', fileList);
+      setValue('gallery_image_urls', previews);
     },
     [galleryImageFiles, galleryImagesPreviews, setValue]
   );
@@ -80,8 +87,9 @@ export function DescriptionAndGalleryStep() {
     setValue('cover_image_file', null);
   };
 
-  const handleRemoveGalleryImage = (index: number): void => {
-    URL.revokeObjectURL(galleryImagesPreviews[index]);
+  const handleRemoveGalleryImage = (previewUrl: string): void => {
+    const index = galleryImagesPreviews.indexOf(previewUrl);
+    URL.revokeObjectURL(previewUrl);
 
     const updatedFiles = galleryImageFiles.filter((_, i) => i !== index);
     const updatedPreviews = galleryImagesPreviews.filter((_, i) => i !== index);
@@ -89,7 +97,16 @@ export function DescriptionAndGalleryStep() {
     setGalleryImageFiles(updatedFiles);
     setGalleryImagesPreviews(updatedPreviews);
 
+    if (previewUrl.startsWith('services/')) {
+      setCurrentGalleryImagesPreviews(currentGalleryImagesPreviews.filter(url => url !== previewUrl));
+      setValue('removed_existing_gallery_image_urls', [
+        ...(getValues('removed_existing_gallery_image_urls') || []),
+        previewUrl,
+      ]);
+    }
+
     setValue('gallery_image_files', updatedFiles);
+    // setValue('gallery_image_urls', updatedPreviews);
   };
 
   useEffect(() => {
@@ -100,6 +117,8 @@ export function DescriptionAndGalleryStep() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const allGalleryImagePreviews = [...currentGalleryImagesPreviews, ...galleryImagesPreviews];
 
   return (
     <Card>
@@ -170,7 +189,6 @@ export function DescriptionAndGalleryStep() {
             <Controller
               name='cover_image_file'
               control={control}
-              rules={{ required: true }}
               render={({ field }) => (
                 <input
                   {...getCoverImageInputProps()}
@@ -192,9 +210,9 @@ export function DescriptionAndGalleryStep() {
           </div>
           <div className='flex flex-col gap-1'>
             <Label htmlFor='gallery'>Image Gallery</Label>
-            {galleryImagesPreviews.length > 0 ? (
+            {allGalleryImagePreviews.length > 0 ? (
               <div className='grid grid-cols-3 gap-4'>
-                {galleryImagesPreviews.map((previewUrl, index) => (
+                {allGalleryImagePreviews.map(previewUrl => (
                   <div key={previewUrl} className='relative overflow-hidden rounded-sm border-2'>
                     <Image
                       src={previewUrl}
@@ -206,13 +224,13 @@ export function DescriptionAndGalleryStep() {
                     <button
                       type='button'
                       className='absolute top-0 right-0 m-2 cursor-pointer rounded-full bg-black p-1 text-white hover:bg-neutral-800'
-                      onClick={() => handleRemoveGalleryImage(index)}
+                      onClick={() => handleRemoveGalleryImage(previewUrl)}
                     >
                       <X size={20} />
                     </button>
                   </div>
                 ))}
-                {galleryImageFiles.length < MAX_IMAGE_FILES && (
+                {allGalleryImagePreviews.length < MAX_IMAGE_FILES && (
                   <button
                     {...getGalleryImagesRootProps()}
                     type='button'
@@ -252,7 +270,6 @@ export function DescriptionAndGalleryStep() {
             <Controller
               name='gallery_image_files'
               control={control}
-              rules={{ required: true }}
               render={({ field }) => (
                 <input
                   {...getGalleryImagesInputProps()}
@@ -260,18 +277,14 @@ export function DescriptionAndGalleryStep() {
                   onChange={e => {
                     const files = e.target.files;
                     if (files && files.length > 0) {
-                      const newFiles = Array.from(files)
-                        .slice(0, MAX_IMAGE_FILES - galleryImageFiles.length)
-                        .filter(file => !galleryImageFiles.find(f => f.name === file.name));
+                      const newFiles = Array.from(files).slice(0, MAX_IMAGE_FILES - allGalleryImagePreviews.length);
                       const updatedFiles = [...galleryImageFiles, ...newFiles];
                       field.onChange(updatedFiles);
                       setGalleryImageFiles(updatedFiles);
 
                       galleryImagesPreviews.forEach(URL.revokeObjectURL);
-
                       const newPreviews = updatedFiles.map(file => URL.createObjectURL(file));
                       setGalleryImagesPreviews(newPreviews);
-
                       e.target.value = '';
                     }
                   }}

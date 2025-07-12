@@ -6,7 +6,7 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
-export default async function DashboardRaketsNewPage({ params }: Props) {
+export default async function DashboardRaketsEditPage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
   const { data: service } = await supabase.from('services').select('*').eq('id', id).single();
