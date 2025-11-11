@@ -47,13 +47,17 @@ export default function ServiceCard({ service }: Props) {
         <CardContent className='relative flex h-full flex-col px-0'>
           <OwnerActions service={service} />
           <Link href={`${PublicRoutes.SERVICES}/${service.slug}`}>
+            {/* TODO: Replace with optimized image handling, temporary fix for missing images */}
             <Image
               width={1000}
               height={200}
-              quality={20}
-              src={service.cover_image_url || `https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${service?.title}`}
+              src={
+                `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${service.cover_image_url}` ||
+                `https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${service?.title}`
+              }
               alt='Service cover image'
               className='aspect-video w-full object-cover'
+              unoptimized
             />
           </Link>
 

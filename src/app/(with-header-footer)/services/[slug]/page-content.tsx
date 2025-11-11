@@ -99,22 +99,26 @@ export default function ServiceViewPageContent({ user, service }: Props) {
       <div className='mt-4 grid grid-cols-3 gap-8'>
         <section className='col-span-2 flex flex-col gap-8'>
           <div className='flex flex-col gap-4'>
+            {/* TODO: Replace with optimized image handling, temporary fix for missing images */}
             <Image
-              src={currentImageUrl || `https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${service?.title}`}
+              src={
+                `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${currentImageUrl}` ||
+                `https://api.dicebear.com/9.x/glass/svg?radius=0&seed=${service?.title}`
+              }
               alt={service.title}
               width={1920}
               height={500}
-              quality={20}
               className='col-span-full aspect-video w-full rounded-lg bg-gray-200 object-contain shadow-md'
+              unoptimized
             />
             <div className='w-full overflow-x-auto'>
               <div className='flex gap-4 pb-2' style={{ width: 'max-content' }}>
                 {allServiceImages
                   .filter(imageUrl => imageUrl !== null)
                   .map((imageUrl, index) => (
-                    <Image
+                    <Image // TODO: Replace with optimized image handling, temporary fix for missing images
                       key={index}
-                      src={imageUrl}
+                      src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${imageUrl}`}
                       alt={service.title}
                       width={1920}
                       height={500}
@@ -124,6 +128,7 @@ export default function ServiceViewPageContent({ user, service }: Props) {
                         'aspect-video w-[200px] rounded-lg object-contain transition-all duration-100 hover:cursor-pointer hover:border-4 hover:border-blue-400',
                         currentImageUrl === imageUrl && 'border-4 border-blue-400'
                       )}
+                      unoptimized
                     />
                   ))}
               </div>
